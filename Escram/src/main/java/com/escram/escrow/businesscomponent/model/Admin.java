@@ -1,7 +1,5 @@
 package com.escram.escrow.businesscomponent.model;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,11 +11,10 @@ import lombok.Data;
 @Entity
 @Table
 @Data
-public class Cliente {
-
+public class Admin {
 	@Id
-	@SequenceGenerator(name = "cliente_seq", sequenceName = "id_cliente_seq", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(generator = "cliente_seq")
+	@SequenceGenerator(name = "admin_seq", sequenceName = "id_admin_seq", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(generator = "admin_seq")
 	long id;
 	@Column(name = "nome", nullable = false)
 	String nome;
@@ -27,6 +24,4 @@ public class Cliente {
 	String email;
 	@Column(name = "password", nullable = false)
 	String password;
-	@Column(name = "blocked", nullable = false)
-	boolean blocked = false;
 }
