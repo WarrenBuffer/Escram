@@ -13,21 +13,25 @@ import lombok.Data;
 @Entity
 @Table
 @Data
-public class Cliente implements Serializable{
-	private static final long serialVersionUID = 7669044406962086851L;
+public class Portafoglio implements Serializable{
+	private static final long serialVersionUID = -4555149560219465876L;
 	
 	@Id
 	@SequenceGenerator(name = "cliente_seq", sequenceName = "id_cliente_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(generator = "cliente_seq")
-	long id;
-	@Column(name = "nome", nullable = false)
-	String nome;
-	@Column(name = "cognome", nullable = false)
-	String cognome;
-	@Column(name = "email", nullable = false, unique = true)
-	String email;
-	@Column(name = "password", nullable = false)
-	String password;
+	private String id;
+	
+	private long idCliente;
+	
+	@Column(name="simbolo_crypto", nullable = false)
+	private String simboloCrypto;
+	
+	@Column(name="saldo", nullable = false)
+	private double saldo;
+	
 	@Column(name = "blocked", nullable = false)
-	boolean blocked = false;
+	private boolean blocked = false;
+	
+	@Column(name="qrCode", nullable = false)
+	private String qrCode;
 }
