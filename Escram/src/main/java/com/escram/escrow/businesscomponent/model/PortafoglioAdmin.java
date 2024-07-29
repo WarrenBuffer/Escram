@@ -12,13 +12,13 @@ import lombok.Data;
 @Entity
 @Table
 @Data
-public class Portafoglio implements Serializable{
-	private static final long serialVersionUID = -4555149560219465876L;
-	
+public class PortafoglioAdmin implements Serializable{
+	private static final long serialVersionUID = 8674692131502808987L;
+
 	@Id
 	private String indirizzo;
 	
-	private long idCliente;
+	private long idAdmin;
 	
 	@Column(name="simbolo_crypto", nullable = false)
 	private String simboloCrypto;
@@ -26,15 +26,18 @@ public class Portafoglio implements Serializable{
 	@Column(name="saldo", nullable = false)
 	private double saldo;
 	
-	@Column(name = "blocked", nullable = false)
-	private boolean blocked = false;
-	
 	@Column(name="qrCode", nullable = false)
 	private String qrCode;
+	
+	@Column(name="apiKey", nullable = false)
+	private String apiKey;
 	
 	@Column(name="creazione", nullable = false)
 	private Date creazione;
 	
 	@Column(name="scadenza", nullable = false)
 	private Date scadenza;
+	
+	@Column(name="password", nullable= false)
+	private String password;
 }

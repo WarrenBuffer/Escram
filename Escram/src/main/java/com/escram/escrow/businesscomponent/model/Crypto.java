@@ -15,7 +15,7 @@ public class Crypto implements Serializable{
 	private static final long serialVersionUID = 7982091987549324778L;
 	
 	@Id
-	String simbolo;
+	private String simbolo;
 	@Column(name = "urlImmagine", nullable = false)
-	String urlImmagine;
+	private String urlImmagine;
 }

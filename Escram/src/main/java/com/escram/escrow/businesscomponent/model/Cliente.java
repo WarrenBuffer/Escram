@@ -19,15 +19,15 @@ public class Cliente implements Serializable{
 	@Id
 	@SequenceGenerator(name = "cliente_seq", sequenceName = "id_cliente_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(generator = "cliente_seq")
-	long id;
+	private long id;
 	@Column(name = "nome", nullable = false)
-	String nome;
+	private String nome;
 	@Column(name = "cognome", nullable = false)
-	String cognome;
+	private String cognome;
 	@Column(name = "email", nullable = false, unique = true)
-	String email;
+	private String email;
 	@Column(name = "password", nullable = false)
-	String password;
+	private String password;
 	@Column(name = "blocked", nullable = false)
-	boolean blocked = false;
+	private boolean blocked = false;
 }
