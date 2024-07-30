@@ -9,6 +9,5 @@ public interface PortafoglioService {
 	Portafoglio save(Portafoglio portaFoglio);
 	Optional<Portafoglio> findById(String id);
 	List<Portafoglio> findAll();
-	List<Portafoglio> findAllByIdCliente(long idCliente);
 	void delete(Portafoglio portafoglio);
 }

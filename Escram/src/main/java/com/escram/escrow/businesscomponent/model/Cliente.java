@@ -2,7 +2,9 @@ package com.escram.escrow.businesscomponent.model;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,11 +20,10 @@ import lombok.Data;
 @Data
 public class Cliente implements Serializable{
 	private static final long serialVersionUID = 7669044406962086851L;
-	
 	@Id
 	@SequenceGenerator(name = "cliente_seq", sequenceName = "id_cliente_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(generator = "cliente_seq")
-	private long id;
+	private long idCliente;
 	@Column(name = "nome", nullable = false)
 	private String nome;
 	@Column(name = "cognome", nullable = false)
@@ -34,7 +35,6 @@ public class Cliente implements Serializable{
 	@Column(name = "blocked", nullable = false)
 	private boolean blocked = false;
 	
-	@OneToMany(targetEntity = Portafoglio.class)
-	@JoinColumn(name= "idCliente")
-	HashSet<Portafoglio> portafogli=new HashSet<Portafoglio>();
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
+	private Set<Portafoglio> portafogli;
 }

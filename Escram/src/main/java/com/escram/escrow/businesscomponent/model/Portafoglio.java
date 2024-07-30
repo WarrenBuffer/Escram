@@ -2,12 +2,15 @@ package com.escram.escrow.businesscomponent.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -20,11 +23,11 @@ public class Portafoglio implements Serializable{
 	@Id
 	private String indirizzo;
 	
+	@JoinColumn(name = "idCliente")
 	private long idCliente;
 	
 	@ManyToOne
 	@JoinColumn(name = "simbolo")
-	@Column(name="crypto", nullable = false)
 	private Crypto crypto;
 	
 	@Column(name="saldo", nullable = false)
@@ -41,4 +44,10 @@ public class Portafoglio implements Serializable{
 	
 	@Column(name="scadenza", nullable = false)
 	private Date scadenza;
+	
+	@OneToMany(mappedBy = "indirizzo")
+	private Set<TransazionePortafoglio> transazioniPortafoglio;
+	
+	@OneToMany(mappedBy = "indirizzoSrc")
+	private Set<TransazioneEscrow> transazioniEscrow;
 }

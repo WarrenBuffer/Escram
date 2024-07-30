@@ -14,7 +14,9 @@ import lombok.Data;
 public class Crypto implements Serializable{
 	private static final long serialVersionUID = 7982091987549324778L;
 	@Id
-	private String simbolo;
+	String simbolo;
+	@Column(name = "nome", nullable = false)
+	String nome;
 	@Column(name = "urlImmagine", nullable = false)
 	private String urlImmagine;
 }

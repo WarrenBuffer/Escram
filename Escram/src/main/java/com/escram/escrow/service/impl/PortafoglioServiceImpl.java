@@ -32,11 +32,6 @@ public class PortafoglioServiceImpl implements PortafoglioService{
 	}
 
 	@Override
-	public List<Portafoglio> findAllByIdCliente(long idCliente) {
-		return pr.findAllByIdCliente(idCliente);
-	}
-
-	@Override
 	public void delete(Portafoglio portafoglio) {
 		pr.delete(portafoglio);
 		

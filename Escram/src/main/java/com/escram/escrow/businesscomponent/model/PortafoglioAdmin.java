@@ -20,14 +20,12 @@ public class PortafoglioAdmin implements Serializable{
 	@Id
 	private String indirizzo;
 	
-	@ManyToOne(targetEntity = Admin.class)
-	@JoinColumn(name = "id")
-	@Column(name="id_admin", nullable = false)
+	@JoinColumn(name = "idAdmin")
 	private long idAdmin;
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "simbolo")
-	@Column(name="crypto", nullable = false)
 	private Crypto crypto;
 	
 	@Column(name="saldo", nullable = false)
