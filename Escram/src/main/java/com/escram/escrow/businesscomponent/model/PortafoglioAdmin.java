@@ -6,6 +6,8 @@ import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -18,10 +20,15 @@ public class PortafoglioAdmin implements Serializable{
 	@Id
 	private String indirizzo;
 	
+	@ManyToOne(targetEntity = Admin.class)
+	@JoinColumn(name = "id")
+	@Column(name="id_admin", nullable = false)
 	private long idAdmin;
 	
-	@Column(name="simbolo_crypto", nullable = false)
-	private String simboloCrypto;
+	@ManyToOne
+	@JoinColumn(name = "simbolo")
+	@Column(name="crypto", nullable = false)
+	private Crypto crypto;
 	
 	@Column(name="saldo", nullable = false)
 	private double saldo;

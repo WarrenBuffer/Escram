@@ -6,6 +6,8 @@ import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -20,8 +22,10 @@ public class Portafoglio implements Serializable{
 	
 	private long idCliente;
 	
-	@Column(name="simbolo_crypto", nullable = false)
-	private String simboloCrypto;
+	@ManyToOne
+	@JoinColumn(name = "simbolo")
+	@Column(name="crypto", nullable = false)
+	private Crypto crypto;
 	
 	@Column(name="saldo", nullable = false)
 	private double saldo;
@@ -31,7 +35,7 @@ public class Portafoglio implements Serializable{
 	
 	@Column(name="qrCode", nullable = false)
 	private String qrCode;
-	
+
 	@Column(name="creazione", nullable = false)
 	private Date creazione;
 	
