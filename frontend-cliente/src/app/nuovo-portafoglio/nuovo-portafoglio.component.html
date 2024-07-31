@@ -1,0 +1,23 @@
+<!-- portafoglio.component.html -->
+<div class="p-grid p-justify-center">
+    <div class="p-col-12 p-md-8 p-lg-6">
+        <p-card header="Crea un Wallet di Criptovaluta" styleClass="p-mb-3">
+            <form (ngSubmit)="onSubmit()" [formGroup]="form" class="p-fluid">
+                <div class="p-field p-grid">
+                    <label for="crypto" class="p-col-fixed" style="width: 150px;">Seleziona Criptovaluta</label>
+                    <div class="p-col">
+                        <p-dropdown id="crypto" [options]="crypto" formControlName="crypto" optionLabel="name"
+                            placeholder="Seleziona una criptovaluta" [showClear]="true" filter="true">
+                        </p-dropdown>
+                        <p-message *ngIf="form.controls['crypto'].invalid && form.controls['crypto'].touched"
+                            severity="error" text="La criptovaluta è obbligatoria"></p-message>
+                    </div>
+                </div>
+
+                <div class="p-field">
+                    <button pButton type="submit" label="Crea Wallet" [disabled]="form.invalid"></button>
+                </div>
+            </form>
+        </p-card>
+    </div>
+</div>

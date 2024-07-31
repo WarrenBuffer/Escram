@@ -1,0 +1,74 @@
+<div class="p-grid p-nogutter full-height">
+  <!-- Sezione tabella -->
+  <div class="p-col-12 p-md-6 left-section">
+    <h2>Scegli un portafoglio tra quelli disponibili</h2>
+    <div class="table-wrapper">
+      <p-table [value]="listaPortafogli" [tableStyle]="{ 'min-width': '50rem' }" [responsiveLayout]="'scroll'"
+        class="p-table">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Simbolo</th>
+            <th>Indirizzo</th>
+            <th>Stato</th>
+            <th>Saldo</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-portafoglio>
+          <tr (click)="selezionaRiga(portafoglio)" [class.selected]="portafoglio === portafoglioSelezionato" [class.clickable]="!portafoglio.blocked"
+          [class.not-clickable]="portafoglio.blocked">
+            <td>
+              {{ portafoglio.simbolo }}
+            </td>
+            <td>{{ portafoglio.indirizzo }}</td>
+            <td>
+              <i [class]="'pi ' + (portafoglio.blocked ? 'pi-lock' : 'pi-unlock')" [ngStyle]="{
+                  color: portafoglio.blocked ? 'red' : 'green'
+                }" aria-hidden="true"></i>
+            </td>
+            <td>{{ portafoglio.saldo }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <!-- Sezione invia -->
+  <div *ngIf="portafoglioSelezionato!==null" class="p-col-12 p-md-6 right-section">
+    <h2>Trasferisci Criptovaluta</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="p-fluid">
+        <!-- Campi del Form -->
+        <div class="p-field">
+          <label for="saldo">Importo Criptovaluta</label>
+          <input id="saldo" type="number" formControlName="saldo" pInputText placeholder="Inserisci importo" required />
+          <p-message *ngIf="form.controls['saldo'].invalid && form.controls['saldo'].touched" severity="error"
+            text="L'importo è obbligatorio"></p-message>
+        </div>
+
+        <div class="p-field">
+          <label for="indirizzo">Email Destinatario</label>
+          <input id="indirizzo" type="email" formControlName="indirizzo" pInputText
+            placeholder="Inserisci email destinatario" required />
+          <p-message *ngIf="
+              form.controls['indirizzo'].invalid &&
+              form.controls['indirizzo'].touched
+            " severity="error" text="L'email è obbligatoria"></p-message>
+        </div>
+
+        <div class="p-field">
+          <label for="descrizione">Descrizione</label>
+          <input id="descrizione" type="text" formControlName="descrizione" pInputText
+            placeholder="Inserisci descrizione" required />
+          <p-message *ngIf="
+              form.controls['descrizione'].invalid &&
+              form.controls['descrizione'].touched
+            " severity="error" text="La descrizione è obbligatoria"></p-message>
+        </div>
+
+        <div class="p-field">
+          <button pButton type="submit" label="Invia" [disabled]="form.invalid"></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
