@@ -15,13 +15,15 @@ import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
+import { TransazioneComponent } from './transazione/transazione.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     PortafoglioComponent,
-    TransazioneEscrowComponent
+    TransazioneEscrowComponent,
+    TransazioneComponent
   ],
   imports: [
     BrowserModule,

@@ -18,15 +18,34 @@ export class TransazioneEscrowComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.listaPortafogli = [{
-      simbolo: 'BTC',
-      indirizzo: "indirizzo",
-      idCliente: 20,
-      blocked: false,
-      creazione: new Date(),
-      saldo: 100,
-      qrCode: undefined
-    }
+    this.listaPortafogli = [
+      {
+        simbolo: 'BTC',
+        indirizzo: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+        blocked: false,
+        idCliente: 20,
+        qrCode: 'code',
+        creazione: new Date(),
+        saldo: 50,
+      },
+      {
+        simbolo: 'ETH',
+        indirizzo: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+        blocked: true,
+        idCliente: 20,
+        qrCode: 'code',
+        creazione: new Date(),
+        saldo: 20,
+      },
+      {
+        simbolo: 'XRP',
+        indirizzo: 'rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh',
+        blocked: false,
+        idCliente: 20,
+        qrCode: 'code',
+        creazione: new Date(),
+        saldo: 300,
+      },
   ]
 
     this.form = this.fb.group ({
