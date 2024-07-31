@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class BCResponse {
 	private boolean ok;
-	private String message;
+	private Object message;
 }

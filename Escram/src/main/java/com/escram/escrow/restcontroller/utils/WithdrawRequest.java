@@ -1,4 +1,4 @@
-package com.escram.escrow.utils;
+package com.escram.escrow.restcontroller.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetNewAddress {
-	private String api_key;
-	private String password;
-	private String label;
+public class WithdrawRequest {
+	private String toAddress;
+	private double amount;
 }

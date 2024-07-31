@@ -19,7 +19,10 @@ import com.escram.escrow.businesscomponent.model.enums.StatoTransazione;
 import com.escram.escrow.businesscomponent.model.enums.TipoTransazione;
 import com.escram.escrow.businesscomponent.model.enums.TipologiaCliente;
 import com.escram.escrow.restcontroller.CoinRemitterApi;
-import com.escram.escrow.security.Token;
+import com.escram.escrow.restcontroller.utils.CreateInvoice;
+import com.escram.escrow.restcontroller.utils.GetInvoice;
+import com.escram.escrow.restcontroller.utils.GetNewAddress;
+import com.escram.escrow.restcontroller.utils.Withdraw;
 import com.escram.escrow.service.ClienteService;
 import com.escram.escrow.service.CryptoService;
 import com.escram.escrow.service.InvoiceService;
@@ -27,10 +30,7 @@ import com.escram.escrow.service.PortafoglioService;
 import com.escram.escrow.service.TransazioneService;
 import com.escram.escrow.utils.BCResponse;
 import com.escram.escrow.utils.Costanti;
-import com.escram.escrow.utils.CreateInvoice;
-import com.escram.escrow.utils.GetInvoice;
-import com.escram.escrow.utils.GetNewAddress;
-import com.escram.escrow.utils.Withdraw;
+import com.escram.escrow.utils.Token;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -52,6 +52,7 @@ public class ClienteBC implements Costanti {
 	InvoiceService is;
 	
 	private boolean validateCredentials(String nome, String cognome, String email, String password) {
+		System.out.println(email + " " + password);
 		if (nome == null || cognome == null || email == null || password == null)
 			return false;
 		if (!nome.matches("^[a-zA-Z ,.'-]{2,30}$"))
@@ -91,6 +92,14 @@ public class ClienteBC implements Costanti {
 			return new BCResponse(false, "Credenziali non valide.");
 		
 		return new BCResponse(true, Token.generate(email));
+	}
+
+	public BCResponse getCliente(String email) {
+		Optional<Cliente> cliente = cs.findById(email);
+		if (cliente.isEmpty())
+			return new BCResponse(false, "Nessun utente trovato con email " + email);
+		
+		return new BCResponse(true, cliente.get());
 	}
 	
 	public BCResponse creaPortafoglio(String simbolo, String email, String label) throws URISyntaxException, JsonMappingException, JsonProcessingException {

@@ -1,4 +1,4 @@
-package com.escram.escrow.security;
+package com.escram.escrow.utils;
 
 import java.time.Instant;
 

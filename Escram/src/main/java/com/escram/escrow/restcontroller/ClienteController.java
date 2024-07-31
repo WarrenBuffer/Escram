@@ -1,11 +1,15 @@
 package com.escram.escrow.restcontroller;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
-import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.RestPath;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.escram.escrow.businesscomponent.ClienteBC;
+import com.escram.escrow.restcontroller.utils.CreaPortafoglioRequest;
+import com.escram.escrow.restcontroller.utils.CreateInvoiceRequest;
+import com.escram.escrow.restcontroller.utils.LoginRequest;
+import com.escram.escrow.restcontroller.utils.SignupRequest;
+import com.escram.escrow.restcontroller.utils.WithdrawRequest;
 import com.escram.escrow.utils.BCResponse;
 import com.escram.escrow.utils.Costanti;
 
@@ -16,9 +20,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
 
 @Path("/cliente")
 @RequestScoped
@@ -32,9 +34,8 @@ public class ClienteController implements Costanti {
 	@Path("/signup")
 	@POST
 	@PermitAll
-	public Response signUp(@RestForm String nome, @RestForm String cognome, @RestForm String email,
-			@RestForm String password, @RestForm String tipologia) {
-		BCResponse bcRes = clienteBC.signUp(nome, cognome, email, password, tipologia);
+	public Response signUp(SignupRequest request) {
+		BCResponse bcRes = clienteBC.signUp(request.getNome(), request.getCognome(), request.getEmail(), request.getPassword(), request.getTipologia());
 
 		if (!bcRes.isOk())
 			return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
@@ -45,21 +46,33 @@ public class ClienteController implements Costanti {
 	@Path("/login")
 	@POST
 	@PermitAll
-	public Response loginCliente(@RestForm String email, @RestForm String password, @Context SecurityContext ctx) {
-		BCResponse bcRes = clienteBC.login(email, password);
+	public Response loginCliente(LoginRequest request) {
+		BCResponse bcRes = clienteBC.login(request.getEmail(), request.getPassword());
 
 		if (!bcRes.isOk())
 			return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
 
+		return Response.status(Response.Status.OK).entity("Bearer " + bcRes.getMessage()).build();
+	}
+	
+	@Path("/getCliente")
+	@POST
+	@PermitAll
+	public Response getCliente(String email) {
+		BCResponse bcRes = clienteBC.getCliente(email);
+		
+		if (!bcRes.isOk())
+			return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
+		
 		return Response.status(Response.Status.OK).entity(bcRes.getMessage()).build();
 	}
 
 	@Path("/creaPortafoglio/{simbolo}")
 	@POST
 	@RolesAllowed("Authenticated")
-	public Response creaPortafoglio(@RestPath String simbolo, @RestForm String email, @RestForm String label) {
+	public Response creaPortafoglio(@RestPath String simbolo, CreaPortafoglioRequest request) {
 		try {
-			BCResponse bcRes = clienteBC.creaPortafoglio(simbolo, email, label);
+			BCResponse bcRes = clienteBC.creaPortafoglio(simbolo, request.getEmail(), request.getLabel());
 
 			if (!bcRes.isOk())
 				return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
@@ -74,9 +87,9 @@ public class ClienteController implements Costanti {
 	@Path("/withdraw/{simbolo}")
 	@POST
 	@RolesAllowed("Authenticated")
-	public Response withdraw(@RestForm String toAddress, @RestForm double amount, @RestPath String simbolo) {
+	public Response withdraw(@RestPath String simbolo, WithdrawRequest request) {
 		try {
-			BCResponse bcRes = clienteBC.preleva(simbolo, toAddress, amount);
+			BCResponse bcRes = clienteBC.preleva(simbolo, request.getToAddress(), request.getAmount());
 
 			if (!bcRes.isOk())
 				return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
@@ -91,10 +104,9 @@ public class ClienteController implements Costanti {
 	@Path("/createInvoice/{simbolo}")
 	@POST
 	@RolesAllowed("Authenticated")
-	public Response createInvoice(@RestPath String simbolo, @RestForm String fromAddress, @RestForm String toAddress,
-			@RestForm double amount, @RestForm String descrizione) {
+	public Response createInvoice(@RestPath String simbolo, CreateInvoiceRequest request) {
 		try {
-			BCResponse bcRes = clienteBC.createInvoice(simbolo, fromAddress, toAddress, amount, descrizione);
+			BCResponse bcRes = clienteBC.createInvoice(simbolo, request.getFromAddress(), request.getToAddress(), request.getAmount(), request.getDescrizione());
 
 			if (!bcRes.isOk())
 				return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
@@ -109,7 +121,7 @@ public class ClienteController implements Costanti {
 	@Path("/getInvoice/{simbolo}")
 	@POST
 	@RolesAllowed("Authenticated")
-	public Response getInvoice(@RestPath String simbolo, @RestForm String invoiceId) {
+	public Response getInvoice(@RestPath String simbolo, String invoiceId) {
 		try {
 			BCResponse bcRes = clienteBC.getInvoice(simbolo, invoiceId);
 

@@ -1,4 +1,4 @@
-package com.escram.escrow.utils;
+package com.escram.escrow.restcontroller.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
