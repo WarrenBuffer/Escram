@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PortafoglioComponent } from './nuovo-portafoglio/nuovo-portafoglio.component'; 
 import { InputTextModule } from 'primeng/inputtext';
-import { TransazioneEscrowComponent } from './transazione-escrow/transazione-escrow.component';
+import { InvoiceComponent } from './invoice/invoice.component';
 
 // PrimeNG Modules
 import { ButtonModule } from 'primeng/button';
@@ -22,7 +22,7 @@ import { TransazioneComponent } from './transazione/transazione.component';
   declarations: [
     AppComponent,
     PortafoglioComponent,
-    TransazioneEscrowComponent,
+    InvoiceComponent,
     TransazioneComponent
   ],
   imports: [

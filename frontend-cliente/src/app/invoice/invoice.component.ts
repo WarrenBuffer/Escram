@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Portafoglio } from '../model/portafoglio.model';
 
 @Component({
-  selector: 'app-transazione-escrow',
-  templateUrl: './transazione-escrow.component.html',
-  styleUrl: './transazione-escrow.component.css'
+  selector: 'app-invoice',
+  templateUrl: './invoice.component.html',
+  styleUrl: './invoice.component.css'
 })
-export class TransazioneEscrowComponent implements OnInit {
+export class InvoiceComponent implements OnInit {
   listaPortafogli: Portafoglio[] = [];
   form!: FormGroup;
   saldo!: number;

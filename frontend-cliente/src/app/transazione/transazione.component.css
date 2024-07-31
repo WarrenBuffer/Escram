@@ -51,10 +51,14 @@
     background-color: #5edb5c86; /* Light blue background for selected row */
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: 1500px) {
     /* Media query per dispositivi più piccoli */
     .p-grid {
       flex-direction: column;
+    }
+    .p-table {
+      min-height: 50vh; /* Assicura che le sezioni abbiano un'altezza minima */
+      width: 100%; /* Occupy full width on smaller screens */
     }
     .left-section,
     .right-section {
