@@ -14,11 +14,15 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Cliente implements Serializable{
 	private static final long serialVersionUID = 7669044406962086851L;
 	@Id

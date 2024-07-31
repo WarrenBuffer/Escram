@@ -11,9 +11,15 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Invoice {
 	@Id
 	private String id;
@@ -26,6 +32,9 @@ public class Invoice {
 
 	@Column(name = "status", nullable = false)
 	private String status;
+
+	@Column(name = "url", nullable = false)
+	private String url;
 	
 	@JoinColumn(name = "indirizzoSrc")
 	private String indirizzoSrc;
