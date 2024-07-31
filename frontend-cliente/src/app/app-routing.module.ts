@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PortafoglioComponent } from './nuovo-portafoglio/nuovo-portafoglio.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { TransazioneComponent } from './transazione/transazione.component';
+import { HomeComponent } from './home/home.component';
 
 import { mapToCanActivate, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from './services/auth-guard.service';
@@ -15,9 +16,7 @@ const routes: Routes = [
   { path: 'nuovoPortafoglio', canActivate: mapToCanActivate([AuthGuardService]), component: PortafoglioComponent },
   { path: 'invoice',canActivate: mapToCanActivate([AuthGuardService]), component: InvoiceComponent},
   { path: 'transazione',canActivate: mapToCanActivate([AuthGuardService]), component: TransazioneComponent},
-  { path: 'home',canActivate: mapToCanActivate([AuthGuardService]), component: TransazioneComponent},
-  
-
+  { path: 'home',canActivate: mapToCanActivate([AuthGuardService]), component: TransazioneComponent}
 ];
 
 @NgModule({

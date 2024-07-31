@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { PortafoglioComponent } from './nuovo-portafoglio/nuovo-portafoglio.component'; 
 import { InputTextModule } from 'primeng/inputtext';
 import { InvoiceComponent } from './invoice/invoice.component';
+import { AccordionModule } from 'primeng/accordion';
 
 // PrimeNG Modules
 import { ButtonModule } from 'primeng/button';
@@ -16,6 +17,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
 import { TransazioneComponent } from './transazione/transazione.component';
+import { HomeComponent } from './home/home.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { ToastModule } from 'primeng/toast';
@@ -39,7 +42,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     LoginComponent,
     SignUpComponent,
     LoadingComponent,
-    NavbarComponent
+    NavbarComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +67,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     MessageModule,
     MenubarModule,
     ImageModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    AccordionModule,
+    SelectButtonModule
   ],
   providers: [
     provideClientHydration(),

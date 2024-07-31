@@ -65,7 +65,14 @@ export class InvoiceComponent implements OnInit {
   }
 
   selezionaRiga(portafoglio: Portafoglio): void {
-    this.portafoglioSelezionato = portafoglio;
-    console.log("portafoglio scelto: " , portafoglio.simbolo);
+    // Previene la selezione del portafoglio bloccato
+    if (!portafoglio.blocked) {
+      // Verifica se deseleziona la riga o meno
+      if (this.portafoglioSelezionato === portafoglio) {
+        this.portafoglioSelezionato = null;
+      } else {
+        this.portafoglioSelezionato = portafoglio;
+      }
+    }
   }
 }
