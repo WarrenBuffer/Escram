@@ -1,0 +1,34 @@
+<div style="display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+width: 100%;">
+<p-card header="Registrazione" [ngStyle]="{'width':'40%', 'text-align': 'center', 'min-width': '400px', 'margin-bottom':'20px'}">
+    <form [formGroup]="form" (ngSubmit)="submit(form.value)" >
+        <div class="flex flex-column sm:flex-row gap-2" style="margin-bottom: 2%;" >
+            <input style="width: 100%;" pInputText formControlName="nome" placeholder="Nome..." />
+        </div>
+         <p-message severity="error" *ngIf="form.controls.nome.invalid && form.controls.nome.dirty" text="Il nome deve essere valido" />
+        
+        <div class="flex flex-column sm:flex-row gap-2 mt-2" style="margin-bottom: 2%;">
+            <input style="width: 100%;" type="text" formControlName="cognome" pInputText placeholder="Cognome..."/>
+        </div>
+        <p-message severity="error" *ngIf="form.controls.cognome.invalid && form.controls.cognome.dirty" text="Il cognome deve essere valido" />
+
+        <div class="flex flex-column sm:flex-row gap-2" style="margin-bottom: 2%;" >
+            <input style="width: 100%;" pInputText formControlName="email" placeholder="Email..." />
+        </div>
+         <p-message severity="error" *ngIf="form.controls.email.invalid && form.controls.email.dirty" text="L'email deve essere valida" />
+        
+        <div class="flex flex-column sm:flex-row gap-2 mt-2" style="margin-bottom: 2%;">
+            <input style="width: 100%;" type="password" formControlName="password" pInputText placeholder="Password..."/>
+        </div>
+        <p-message severity="error" *ngIf="form.controls.password.invalid && form.controls.password.dirty" text="Min: 7. Max: 32. a-zA-Z0-9@#&%^$?=" />
+        
+        <br>
+        <div class="mt-2" >
+            <p-button  type="submit" severity="primary" [disabled]="!form.valid" [raised]="true" size="small" label="Registrati" icon="pi pi-send"/>
+        </div>
+    </form>
+</p-card>
+</div>

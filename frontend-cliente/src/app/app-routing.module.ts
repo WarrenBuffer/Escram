@@ -1,14 +1,23 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { PortafoglioComponent } from './nuovo-portafoglio/nuovo-portafoglio.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { TransazioneComponent } from './transazione/transazione.component';
 
+import { mapToCanActivate, RouterModule, Routes } from '@angular/router';
+import { AuthGuardService } from './services/auth-guard.service';
+import { LoginComponent } from './login/login.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+
 const routes: Routes = [
-  { path: 'nuovoPortafoglio', component: PortafoglioComponent },
-  { path: '', redirectTo: '/nuovoPortafoglio', pathMatch: 'full' },  // Redirect to a default route, if desired
-  {path: 'invoice', component: InvoiceComponent},
-  {path: 'transazione', component: TransazioneComponent}
+  { path: '', redirectTo: 'signupEscram', pathMatch: 'full'},
+  { path: 'loginEscram', canActivate: mapToCanActivate([AuthGuardService]), component: LoginComponent},
+  { path: 'signupEscram', canActivate: mapToCanActivate([AuthGuardService]), component: SignUpComponent},
+  { path: 'nuovoPortafoglio', canActivate: mapToCanActivate([AuthGuardService]), component: PortafoglioComponent },
+  { path: 'invoice',canActivate: mapToCanActivate([AuthGuardService]), component: InvoiceComponent},
+  { path: 'transazione',canActivate: mapToCanActivate([AuthGuardService]), component: TransazioneComponent},
+  { path: 'home',canActivate: mapToCanActivate([AuthGuardService]), component: TransazioneComponent},
+  
+
 ];
 
 @NgModule({
