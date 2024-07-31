@@ -26,13 +26,8 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public Optional<Admin> findById(long id) {
-		return ar.findById(id);
-	}
-	
-	@Override
-	public Optional<Admin> findByEmail(String email) {
-		return ar.findByEmail(email);
+	public Optional<Admin> findById(String email) {
+		return ar.findById(email);
 	}
 
 	@Override

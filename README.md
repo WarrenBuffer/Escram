@@ -4,6 +4,13 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
+## Roadmap
+1. Un venditore e un cliente si mettono d'accordo su una vendita e decidono di usare l'escrow. 
+2. Il venditore chiede al compratore di creare un account e farsi dare l'email
+3. il venditore può a questo punto creare un invoice, questo ha uno status dato da coinremitter, più i nostri stati, che non possono essere modificati fino a compimento dell'invoice
+4. Una volta che il compratore ha pagato, coinremitter ci avvisa che l'invoice è stato pagato, a questo punto compratore e venditore possono dire se il prodotto è stato inviato e ricevuto
+5. Se c'è disaccordo tra le parti, l'invoice finisce nelle transazioni irrisolte dell'admin, che potrà contattare personalmente le due parti e risolvere la disputa
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:

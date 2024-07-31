@@ -26,13 +26,8 @@ public class ClienteServiceImpl implements ClienteService{
 	}
 
 	@Override
-	public Optional<Cliente> findById(long id) {
-		return cr.findById(id);
-	}
-
-	@Override
-	public Optional<Cliente> findByEmail(String email) {
-		return cr.findByEmail(email);
+	public Optional<Cliente> findById(String email) {
+		return cr.findById(email);
 	}
 
 	@Override

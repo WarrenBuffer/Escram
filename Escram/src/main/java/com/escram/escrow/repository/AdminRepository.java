@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.escram.escrow.businesscomponent.model.Admin;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Long> {
+public interface AdminRepository extends JpaRepository<Admin, String> {
 	Optional<Admin> findByEmail(String email);
 }

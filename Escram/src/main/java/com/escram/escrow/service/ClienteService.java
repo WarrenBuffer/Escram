@@ -8,7 +8,6 @@ import com.escram.escrow.businesscomponent.model.Cliente;
 public interface ClienteService {
 	List<Cliente> findAll(); 
 	Cliente save(Cliente cliente);
-	Optional<Cliente> findById(long id);
-	Optional<Cliente> findByEmail(String email);
+	Optional<Cliente> findById(String email);
 	void delete(Cliente cliente);
 }

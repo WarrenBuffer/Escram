@@ -2,7 +2,6 @@ package com.escram.escrow.businesscomponent.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -23,8 +22,8 @@ public class Portafoglio implements Serializable{
 	@Id
 	private String indirizzo;
 	
-	@JoinColumn(name = "idCliente")
-	private long idCliente;
+	@JoinColumn(name = "emailCliente")
+	private String emailCliente;
 	
 	@ManyToOne
 	@JoinColumn(name = "simbolo")
@@ -45,9 +44,9 @@ public class Portafoglio implements Serializable{
 	@Column(name="scadenza", nullable = false)
 	private Date scadenza;
 	
-	@OneToMany(mappedBy = "indirizzo")
-	private Set<TransazionePortafoglio> transazioniPortafoglio;
-	
+	@OneToMany(mappedBy = "toAddress")
+	private Set<Transazione> transazioni;
+
 	@OneToMany(mappedBy = "indirizzoSrc")
-	private Set<TransazioneEscrow> transazioniEscrow;
+	private Set<Invoice> invoices;
 }

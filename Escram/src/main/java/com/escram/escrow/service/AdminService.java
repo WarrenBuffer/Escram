@@ -8,7 +8,6 @@ import com.escram.escrow.businesscomponent.model.Admin;
 public interface AdminService {
 	List<Admin> findAll();
 	Admin save(Admin admin);
-	Optional<Admin> findById(long id);
-	Optional<Admin> findByEmail(String email);
+	Optional<Admin> findById(String email);
 	void delete(Admin admin);
 }
