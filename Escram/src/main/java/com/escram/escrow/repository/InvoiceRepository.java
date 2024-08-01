@@ -11,9 +11,6 @@ import com.escram.escrow.businesscomponent.model.Invoice;
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, String>{
 
-	@Query(value="select count(*) as totale from Invoice where statoDst=StatoTransazione.IN_ATTESA or statoSrc=StatoTransazione.IN_ATTESA")
-	long transazioniAttive();
-	
 	@Query(value="from Invoice where statoDst=StatoTransazione.ANNULLATO or statoSrc=StatoTransazione.ANNULLATO")
 	List<Invoice> irrisolte();
 	

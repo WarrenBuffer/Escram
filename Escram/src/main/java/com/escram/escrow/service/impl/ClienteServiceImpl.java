@@ -34,6 +34,4 @@ public class ClienteServiceImpl implements ClienteService{
 	public void delete(Cliente cliente) {
 		cr.delete(cliente);
 	}
-
-	
 }

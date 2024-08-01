@@ -37,11 +37,6 @@ public class InvoiceServiceImpl implements InvoiceService{
 	}
 
 	@Override
-	public long transazioniAttive() {
-		return ir.transazioniAttive();
-	}
-
-	@Override
 	public List<Invoice> irrisolte() {
 		return ir.irrisolte();
 	}

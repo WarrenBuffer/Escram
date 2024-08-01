@@ -14,6 +14,7 @@ import com.escram.escrow.service.ClienteService;
 import com.escram.escrow.service.CryptoService;
 import com.escram.escrow.service.InvoiceService;
 import com.escram.escrow.utils.BCResponse;
+import com.escram.escrow.utils.Costanti;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,7 +35,7 @@ import jakarta.ws.rs.core.Context;
 
 @Path("/admin")
 @RequestScoped
-public class AdminController {
+public class AdminController implements Costanti{
 
 	@Inject
 	private ClienteService clienteService;
@@ -56,44 +57,34 @@ public class AdminController {
 
 		return Response.status(Response.Status.OK).entity(bcRes.getMessage()).build();
 	}
-
-	@Path("/attive")
-	@GET
-	@RolesAllowed("ADMIN_ROLE")
-	public Response transazioniAttive() {
-		return Response.ok().entity(invoiceService.transazioniAttive()).build();
-	}
 	
 	@Path("/irrisolte")
 	@GET
-	@RolesAllowed("ADMIN_ROLE")
+	@RolesAllowed(ADMIN_ROLE)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response transazioniIrrisolte() throws JsonProcessingException {
-		List<Invoice> invoices = invoiceService.irrisolte();
-		return Response.ok(new ObjectMapper().writeValueAsString(invoices)).build();
+		return Response.ok().entity(invoiceService.irrisolte().isEmpty() ? 0 : invoiceService.irrisolte()).build();
 	}
 	
 	@Path("/completate")
 	@GET
-	@RolesAllowed("ADMIN_ROLE")
+	@RolesAllowed(ADMIN_ROLE)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response transazioniCompletate() throws JsonProcessingException {
-		List<Invoice> invoices = invoiceService.completate();
-		return Response.ok(new ObjectMapper().writeValueAsString(invoices)).build();
+		return Response.ok().entity(invoiceService.completate().isEmpty() ? 0 : invoiceService.completate()).build();
 	}
 	
 	@Path("/inAttesa")
 	@GET
-	@RolesAllowed("ADMIN_ROLE")
+	@RolesAllowed(ADMIN_ROLE)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response transazioniAnnullate() throws JsonProcessingException {
-		List<Invoice> invoices = invoiceService.inAttesa();
-		return Response.ok(new ObjectMapper().writeValueAsString(invoices)).build();
+		return Response.ok().entity(invoiceService.inAttesa().isEmpty() ? 0 : invoiceService.inAttesa()).build();
 	}
 	
 	@Path("/clienti")
 	@GET
-	@RolesAllowed("ADMIN_ROLE")
+	@RolesAllowed(ADMIN_ROLE)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listaClienti() throws JsonProcessingException {
 		List<Cliente> listaClienti = clienteService.findAll();
@@ -105,25 +96,22 @@ public class AdminController {
 	
 	@Path("/lockUnlock")
 	@POST
-	@RolesAllowed("ADMIN_ROLE")
+	@RolesAllowed(ADMIN_ROLE)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response bloccaSblocca(@RestForm String email) {
 		Optional<Cliente> cliente = clienteService.findById(email);
-		if(cliente.isPresent()) {
-			if(cliente.get().isBlocked()) {
-				cliente.get().setBlocked(false);
-			}else {
-				cliente.get().setBlocked(true);
-			}
-			clienteService.save(cliente.get());
-			return Response.ok().build();
+		if (cliente.isPresent()) {
+	        Cliente c = cliente.get();
+	        c.setBlocked(!c.isBlocked());
+	        clienteService.save(c);
+	        return Response.ok().build();
 		}
 		return Response.status(Status.UNAUTHORIZED).entity(cliente).build();
 	}
 	
 	@Path("/addcrypto")
 	@POST
-	@RolesAllowed("ADMIN_ROLE")
+	@RolesAllowed(ADMIN_ROLE)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response aggiungiCrypto(@RestForm String simbolo, @RestForm String nome, @RestForm String urlImmagine) {
 		Crypto crypto = new Crypto();

@@ -10,7 +10,6 @@ public interface InvoiceService {
 	Invoice save(Invoice invoice);
 	Optional<Invoice> findById(String id);
 	void delete(Invoice invoice);
-	long transazioniAttive();
 	List<Invoice> irrisolte();
 	List<Invoice> completate();
 	List<Invoice> inAttesa();

@@ -38,9 +38,11 @@ public class AdminBC implements Costanti{
 		if (admin.isEmpty())
 			return new BCResponse(false, "Nessun utente trovato con email " + email);
 		
-		if (!BcryptUtil.matches(password, admin.get().getPassword())) 
+		if (!BcryptUtil.matches(password, admin.get().getPassword())) {
 			return new BCResponse(false, "Credenziali non valide.");
+		}
+			
 		
-		return new BCResponse(true, Token.generate(email));
+		return new BCResponse(true, Token.generate(email,ADMIN_ROLE));
 	}
 }
