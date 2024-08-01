@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class GetInvoice {
-	private String api_key;
-	private String password;
-	private String invoice_id;
+public class GetInvoiceRequest {
+	private String invoiceId;
 }

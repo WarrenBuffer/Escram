@@ -46,7 +46,4 @@ public class Portafoglio implements Serializable{
 	
 	@OneToMany(mappedBy = "toAddress")
 	private Set<Transazione> transazioni;
-
-	@OneToMany(mappedBy = "indirizzoSrc")
-	private Set<Invoice> invoices;
 }

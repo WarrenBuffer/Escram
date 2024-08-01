@@ -37,11 +37,11 @@ public class Invoice implements Serializable{
 	@Column(name = "url", nullable = false)
 	private String url;
 	
-	@JoinColumn(name = "indirizzoSrc")
-	private String indirizzoSrc;
+	@JoinColumn(name = "emailSrc")
+	private String emailSrc;
 	
-	@JoinColumn(name = "indirizzoDst")
-	private String indirizzoDst;
+	@JoinColumn(name = "emailDst")
+	private String emailDst;
 	
 	@Column(name = "dataApertura", nullable = false)
 	private Date dataApertura;

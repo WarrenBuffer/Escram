@@ -10,4 +10,8 @@ public interface Costanti {
 	String NOTIFY_URL = ""; // "http://localhost:8080/cliente/notify";
 	String SUCCESS_URL = ""; // "http://localhost:8080/cliente/success";
 	String FAIL_URL = ""; // "http://localhost:8080/cliente/fail";
+	
+	// ROLES
+	String CLIENT_ROLE = "CLIENTE";
+	String ADMIN_ROLE = "ADMIN";
 }

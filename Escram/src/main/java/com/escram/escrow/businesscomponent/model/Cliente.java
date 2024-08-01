@@ -41,6 +41,12 @@ public class Cliente implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private TipologiaCliente tipologia;
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "emailSrc")
+	private Set<Invoice> invoices;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "emailCliente")
 	private Set<Portafoglio> portafogli;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "emailCliente")
+	private Set<Notifica> notifiche;
 }

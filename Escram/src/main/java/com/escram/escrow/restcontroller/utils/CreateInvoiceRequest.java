@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateInvoiceRequest {	
-	private String fromAddress;
-	private String toAddress;
+	private String fromEmail;
+	private String toEmail;
 	private double amount;
 	private String descrizione;
 }

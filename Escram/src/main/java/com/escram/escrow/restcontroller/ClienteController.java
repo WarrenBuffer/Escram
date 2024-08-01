@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.escram.escrow.businesscomponent.ClienteBC;
 import com.escram.escrow.restcontroller.utils.CreaPortafoglioRequest;
 import com.escram.escrow.restcontroller.utils.CreateInvoiceRequest;
+import com.escram.escrow.restcontroller.utils.GetInvoiceRequest;
 import com.escram.escrow.restcontroller.utils.LoginRequest;
 import com.escram.escrow.restcontroller.utils.SignupRequest;
 import com.escram.escrow.restcontroller.utils.WithdrawRequest;
@@ -57,8 +58,10 @@ public class ClienteController implements Costanti {
 	
 	@Path("/getCliente")
 	@POST
-	@PermitAll
-	public Response getCliente(String email) {
+	@RolesAllowed(CLIENT_ROLE)
+	public Response getCliente() {
+		String email = jwt.getName();
+		
 		BCResponse bcRes = clienteBC.getCliente(email);
 		
 		if (!bcRes.isOk())
@@ -69,7 +72,7 @@ public class ClienteController implements Costanti {
 
 	@Path("/creaPortafoglio/{simbolo}")
 	@POST
-	@RolesAllowed("Authenticated")
+	@RolesAllowed(CLIENT_ROLE)
 	public Response creaPortafoglio(@RestPath String simbolo, CreaPortafoglioRequest request) {
 		try {
 			BCResponse bcRes = clienteBC.creaPortafoglio(simbolo, request.getEmail(), request.getLabel());
@@ -86,7 +89,7 @@ public class ClienteController implements Costanti {
 
 	@Path("/withdraw/{simbolo}")
 	@POST
-	@RolesAllowed("Authenticated")
+	@RolesAllowed(CLIENT_ROLE)
 	public Response withdraw(@RestPath String simbolo, WithdrawRequest request) {
 		try {
 			BCResponse bcRes = clienteBC.preleva(simbolo, request.getToAddress(), request.getAmount());
@@ -103,10 +106,10 @@ public class ClienteController implements Costanti {
 
 	@Path("/createInvoice/{simbolo}")
 	@POST
-	@RolesAllowed("Authenticated")
+	@RolesAllowed(CLIENT_ROLE)
 	public Response createInvoice(@RestPath String simbolo, CreateInvoiceRequest request) {
 		try {
-			BCResponse bcRes = clienteBC.createInvoice(simbolo, request.getFromAddress(), request.getToAddress(), request.getAmount(), request.getDescrizione());
+			BCResponse bcRes = clienteBC.createInvoice(simbolo, request.getFromEmail(), request.getToEmail(), request.getAmount(), request.getDescrizione());
 
 			if (!bcRes.isOk())
 				return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
@@ -120,10 +123,10 @@ public class ClienteController implements Costanti {
 
 	@Path("/getInvoice/{simbolo}")
 	@POST
-	@RolesAllowed("Authenticated")
-	public Response getInvoice(@RestPath String simbolo, String invoiceId) {
+	@RolesAllowed(CLIENT_ROLE)
+	public Response getInvoice(@RestPath String simbolo, GetInvoiceRequest request) {
 		try {
-			BCResponse bcRes = clienteBC.getInvoice(simbolo, invoiceId);
+			BCResponse bcRes = clienteBC.getInvoice(simbolo, request.getInvoiceId());
 
 			if (!bcRes.isOk())
 				return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
@@ -137,7 +140,7 @@ public class ClienteController implements Costanti {
 
 	@Path("/getCoinRate")
 	@GET
-	@RolesAllowed("Authenticated")
+	@RolesAllowed(CLIENT_ROLE)
 	public Response getCoinRate() {
 		try {
 			BCResponse bcRes = clienteBC.getCoinRate();

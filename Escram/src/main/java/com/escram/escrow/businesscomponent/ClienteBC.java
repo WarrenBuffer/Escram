@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.escram.escrow.businesscomponent.model.Cliente;
 import com.escram.escrow.businesscomponent.model.Crypto;
 import com.escram.escrow.businesscomponent.model.Invoice;
+import com.escram.escrow.businesscomponent.model.Notifica;
 import com.escram.escrow.businesscomponent.model.Portafoglio;
 import com.escram.escrow.businesscomponent.model.Transazione;
 import com.escram.escrow.businesscomponent.model.enums.StatoTransazione;
@@ -26,6 +27,7 @@ import com.escram.escrow.restcontroller.utils.Withdraw;
 import com.escram.escrow.service.ClienteService;
 import com.escram.escrow.service.CryptoService;
 import com.escram.escrow.service.InvoiceService;
+import com.escram.escrow.service.NotificaService;
 import com.escram.escrow.service.PortafoglioService;
 import com.escram.escrow.service.TransazioneService;
 import com.escram.escrow.utils.BCResponse;
@@ -50,9 +52,10 @@ public class ClienteBC implements Costanti {
 	TransazioneService ts;
 	@Autowired
 	InvoiceService is;
+	@Autowired
+	NotificaService ns;
 	
 	private boolean validateCredentials(String nome, String cognome, String email, String password) {
-		System.out.println(email + " " + password);
 		if (nome == null || cognome == null || email == null || password == null)
 			return false;
 		if (!nome.matches("^[a-zA-Z ,.'-]{2,30}$"))
@@ -84,6 +87,9 @@ public class ClienteBC implements Costanti {
 	}
 	
 	public BCResponse login(String email, String password) {
+		if (email == null || password == null) 
+			return new BCResponse(false, "Valori null.");
+		
 		Optional<Cliente> cliente = cs.findById(email);
 		if (cliente.isEmpty())
 			return new BCResponse(false, "Nessun utente trovato con email " + email);
@@ -91,18 +97,25 @@ public class ClienteBC implements Costanti {
 		if (!BcryptUtil.matches(password, cliente.get().getPassword())) 
 			return new BCResponse(false, "Credenziali non valide.");
 		
-		return new BCResponse(true, Token.generate(email));
+		return new BCResponse(true, Token.generate(email, CLIENT_ROLE));
 	}
 
 	public BCResponse getCliente(String email) {
+		if (email == null)
+			return new BCResponse(false, "Valori null.");
+		
 		Optional<Cliente> cliente = cs.findById(email);
+		System.out.println(email);
 		if (cliente.isEmpty())
-			return new BCResponse(false, "Nessun utente trovato con email " + email);
+			return new BCResponse(false, "Nessun utente trovato.");
 		
 		return new BCResponse(true, cliente.get());
 	}
 	
 	public BCResponse creaPortafoglio(String simbolo, String email, String label) throws URISyntaxException, JsonMappingException, JsonProcessingException {
+		if (simbolo == null || email == null || label == null) 
+			return new BCResponse(false, "Valori null.");
+		
 		Optional<Crypto> cryptoOpt = crys.findById(simbolo);
 		Optional<Cliente> clienteOpt = cs.findById(email);
 		if (cryptoOpt.isEmpty() || clienteOpt.isEmpty())
@@ -138,7 +151,10 @@ public class ClienteBC implements Costanti {
 		return new BCResponse(true, json);
 	}
 	
-	public BCResponse preleva(String simbolo, String toAddress, double amount) throws URISyntaxException, JsonMappingException, JsonProcessingException {
+	public BCResponse preleva(String simbolo, String toAddress, Double amount) throws URISyntaxException, JsonMappingException, JsonProcessingException {
+		if (simbolo == null || toAddress == null || amount == null) 
+			return new BCResponse(false, "Valori null.");
+		
 		Optional<Crypto> cryptoOpt = crys.findById(simbolo);
 		if (cryptoOpt.isEmpty()) {
 			return new BCResponse(false, "Simbolo non esistente.");
@@ -175,29 +191,16 @@ public class ClienteBC implements Costanti {
 		return new BCResponse(true, json);
 	}
 	
-	public BCResponse createInvoice(String simbolo, String fromEmail, String toEmail, double amount, String descrizione) throws URISyntaxException, JsonMappingException, JsonProcessingException {
+	public BCResponse createInvoice(String simbolo, String fromEmail, String toEmail, Double amount, String descrizione) throws URISyntaxException, JsonMappingException, JsonProcessingException {
+		if (simbolo == null || fromEmail == null || toEmail == null || amount == null || descrizione == null) 
+			return new BCResponse(false, "Valori null.");
+		
 		Optional<Crypto> cryptoOpt = crys.findById(simbolo);
 		Optional<Cliente> fromOpt = cs.findById(fromEmail);
 		Optional<Cliente> toOpt = cs.findById(toEmail);
 		
 		if (cryptoOpt.isEmpty() || fromOpt.isEmpty() || toOpt.isEmpty()) {
 			return new BCResponse(false, "Simbolo non esistente.");
-		}
-		
-		String fromAddress = null;
-		for (Portafoglio p : fromOpt.get().getPortafogli()) {
-			if (p.getCrypto().getSimbolo().equals(simbolo))
-				fromAddress = p.getIndirizzo();
-		}
-
-		String toAddress = null;
-		for (Portafoglio p : toOpt.get().getPortafogli()) {
-			if (p.getCrypto().getSimbolo().equals(simbolo))
-				toAddress = p.getIndirizzo();
-		}
-		
-		if (fromAddress == null || toAddress == null) {
-			return new BCResponse(false, "Una delle due email non esiste.");
 		}
 		
 		URI apiUri = new URI(COIN_REMITTER_URL + simbolo);
@@ -222,21 +225,31 @@ public class ClienteBC implements Costanti {
 		cal.add(Calendar.MINUTE, INVOICE_EXPIRATION);
 		Date dataScadenza = cal.getTime();
 		
-		Invoice invoice = new Invoice(id, invoiceId, usdAmount, status, url, fromAddress, toAddress, dataApertura, dataScadenza, StatoTransazione.IN_ATTESA, StatoTransazione.IN_ATTESA);
+		Invoice invoice = new Invoice(id, invoiceId, usdAmount, status, url, fromEmail, toEmail, dataApertura, dataScadenza, StatoTransazione.IN_ATTESA, StatoTransazione.IN_ATTESA);
 		is.save(invoice);
+		
+		Notifica notifica = new Notifica();
+		notifica.setEmailCliente(toEmail);
+		notifica.setInvoiceId(id);
+		ns.save(notifica);
 		
 		return new BCResponse(true, json);
 	}
 
 	public BCResponse getInvoice(String simbolo, String invoiceId) throws URISyntaxException, JsonMappingException, JsonProcessingException {
+		if (simbolo == null || invoiceId == null) 
+			return new BCResponse(false, "Valori null.");
+		
+		
 		Optional<Crypto> cryptoOpt = crys.findById(simbolo);
-		if (cryptoOpt.isEmpty()) {
-			return new BCResponse(false, "Simbolo non esistente.");
+		Optional<Invoice> invoiceOpt = is.findById(invoiceId);
+		if (cryptoOpt.isEmpty() || invoiceOpt.isEmpty()) {
+			return new BCResponse(false, "Simbolo o invoice non esistente.");
 		}
 		
 		URI apiUri = new URI(COIN_REMITTER_URL + simbolo);
 		CoinRemitterApi apiService = RestClientBuilder.newBuilder().baseUri(apiUri).build(CoinRemitterApi.class);
-		String json = apiService.getInvoice(new GetInvoice(TCN_API_KEY, TCN_PASSWORD, invoiceId));
+		String json = apiService.getInvoice(new GetInvoice(TCN_API_KEY, TCN_PASSWORD, invoiceOpt.get().getInvoiceId()));
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(json);
@@ -254,6 +267,4 @@ public class ClienteBC implements Costanti {
 		
 		return new BCResponse(true, json);
 	}
-	
-	
 }
