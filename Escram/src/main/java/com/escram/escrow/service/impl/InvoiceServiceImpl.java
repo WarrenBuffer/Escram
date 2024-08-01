@@ -14,6 +14,8 @@ import com.escram.escrow.service.InvoiceService;
 public class InvoiceServiceImpl implements InvoiceService{
 	@Autowired
 	InvoiceRepository ir;
+	
+
 	@Override
 	public List<Invoice> findAll() {
 		return ir.findAll();
@@ -34,4 +36,23 @@ public class InvoiceServiceImpl implements InvoiceService{
 		ir.delete(invoice);
 	}
 
+	@Override
+	public long transazioniAttive() {
+		return ir.transazioniAttive();
+	}
+
+	@Override
+	public List<Invoice> irrisolte() {
+		return ir.irrisolte();
+	}
+
+	@Override
+	public List<Invoice> completate() {
+		return ir.completate();
+	}
+
+	@Override
+	public List<Invoice> inAttesa() {
+		return ir.inAttesa();
+	}
 }

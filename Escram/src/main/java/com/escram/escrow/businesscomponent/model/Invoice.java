@@ -1,9 +1,9 @@
 package com.escram.escrow.businesscomponent.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.escram.escrow.businesscomponent.model.enums.StatoTransazione;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,13 +14,14 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Entity
 @Table
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Invoice {
+public class Invoice implements Serializable{
+	private static final long serialVersionUID = -7279521160563675337L;
+
 	@Id
 	private String id;
 	
@@ -55,4 +56,6 @@ public class Invoice {
 	@Column(name = "statoDst", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private StatoTransazione statoDst;
+
 }
+

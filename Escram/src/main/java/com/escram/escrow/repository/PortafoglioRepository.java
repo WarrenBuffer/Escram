@@ -7,5 +7,4 @@ import com.escram.escrow.businesscomponent.model.Portafoglio;
 
 @Repository
 public interface PortafoglioRepository extends JpaRepository<Portafoglio, String>{
-	
 }
