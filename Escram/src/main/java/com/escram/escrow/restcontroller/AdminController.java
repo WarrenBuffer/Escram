@@ -59,14 +59,14 @@ public class AdminController {
 
 	@Path("/attive")
 	@GET
-	@RolesAllowed(ADMIN_ROLE)
+	@RolesAllowed("ADMIN_ROLE")
 	public Response transazioniAttive() {
 		return Response.ok().entity(invoiceService.transazioniAttive()).build();
 	}
 	
 	@Path("/irrisolte")
 	@GET
-	@RolesAllowed(ADMIN_ROLE)
+	@RolesAllowed("ADMIN_ROLE")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response transazioniIrrisolte() throws JsonProcessingException {
 		List<Invoice> invoices = invoiceService.irrisolte();
@@ -75,7 +75,7 @@ public class AdminController {
 	
 	@Path("/completate")
 	@GET
-	@RolesAllowed(ADMIN_ROLE)
+	@RolesAllowed("ADMIN_ROLE")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response transazioniCompletate() throws JsonProcessingException {
 		List<Invoice> invoices = invoiceService.completate();
@@ -84,7 +84,7 @@ public class AdminController {
 	
 	@Path("/inAttesa")
 	@GET
-	@RolesAllowed(ADMIN_ROLE)
+	@RolesAllowed("ADMIN_ROLE")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response transazioniAnnullate() throws JsonProcessingException {
 		List<Invoice> invoices = invoiceService.inAttesa();
@@ -93,7 +93,7 @@ public class AdminController {
 	
 	@Path("/clienti")
 	@GET
-	@RolesAllowed(ADMIN_ROLE)
+	@RolesAllowed("ADMIN_ROLE")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listaClienti() throws JsonProcessingException {
 		List<Cliente> listaClienti = clienteService.findAll();
@@ -105,7 +105,7 @@ public class AdminController {
 	
 	@Path("/lockUnlock")
 	@POST
-	@RolesAllowed(ADMIN_ROLE)
+	@RolesAllowed("ADMIN_ROLE")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response bloccaSblocca(@RestForm String email) {
 		Optional<Cliente> cliente = clienteService.findById(email);
@@ -123,7 +123,7 @@ public class AdminController {
 	
 	@Path("/addcrypto")
 	@POST
-	@RolesAllowed(ADMIN_ROLE)
+	@RolesAllowed("ADMIN_ROLE")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response aggiungiCrypto(@RestForm String simbolo, @RestForm String nome, @RestForm String urlImmagine) {
 		Crypto crypto = new Crypto();
