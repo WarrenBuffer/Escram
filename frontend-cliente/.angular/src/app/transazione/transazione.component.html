@@ -1,0 +1,64 @@
+<app-navbar />
+<div style="display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+width: 100%;">
+  <!-- Sezione tabella -->
+  <p-card header="I tuoi portafogli" class="p-col-12 p-md-6" [ngStyle]="{'width':'70%','text-align': 'center'}">
+    <div class="table-wrapper">
+      <p-table [value]="listaPortafogli" [tableStyle]="{ 'min-width': '50rem' }" [responsiveLayout]="'scroll'"
+        class="p-table">
+        <ng-template pTemplate="header">
+          <tr >
+            <th><strong style="color: #FFD54F;" >Simbolo</strong></th>
+            <th><strong style="color: #FFD54F;">Indirizzo</strong></th>
+            <th><strong style="color: #FFD54F;">Saldo</strong></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-portafoglio>
+          <tr (click)="selezionaRiga(portafoglio)" [class.selected]="portafoglio === portafoglioSelezionato" [class.clickable]="true">
+            <td>
+              {{ portafoglio.simbolo }}
+            </td>
+            <td>{{ portafoglio.indirizzo }}</td>
+            <td>{{ portafoglio.saldo }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-card>
+</div>
+<br>
+<div style="display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+width: 100%;">
+  <p-card *ngIf="listaTransazioni " class="p-col-12 p-md-6" [ngStyle]="{'width':'70%','text-align': 'center'}">
+    
+    <div class="table-wrapper">
+      <p-table [value]="listaTransazioni" [tableStyle]="{ 'min-width': '50rem' }" [responsiveLayout]="'scroll'" class="p-table">
+        <ng-template pTemplate="header">
+          <tr >
+            <th><strong style="color: #FFD54F;" >Simbolo</strong></th>
+            <th><strong style="color: #FFD54F;">Indirizzo</strong></th>
+            <th><strong style="color: #FFD54F;">Saldo</strong></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-portafoglio>
+          <tr (click)="selezionaRiga(portafoglio)" [class.selected]="portafoglio === portafoglioSelezionato" [class.clickable]="true">
+            <td>
+              {{ portafoglio.simbolo }}
+            </td>
+            <td>{{ portafoglio.indirizzo }}</td>
+            <td>{{ portafoglio.saldo }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-card>
+  <p-card *ngIf="!listaTransazioni " class="p-col-12 p-md-6" [ngStyle]="{'width':'70%','text-align': 'center'}">
+    <h2>Nessuna transazione</h2>
+  </p-card>
+</div>

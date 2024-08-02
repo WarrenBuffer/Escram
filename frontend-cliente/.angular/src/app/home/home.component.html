@@ -1,0 +1,81 @@
+<app-navbar />
+<div class="p-d-flex p-flex-wrap p-jc-center card-container">
+  <div class="p-d-flex p-flex-column p-ai-center p-mt-4">
+      <p-selectButton [options]="cryptocurrencies" [(ngModel)]="selectedCrypto" optionLabel="label">
+          <ng-template let-item pTemplate="item">
+              <div class="p-d-flex p-ai-center">
+                  <img [src]="item.image" alt="{{item.label}}" class="crypto-icon" />
+                  <span class="p-ml-2">{{item.label}}</span>
+              </div>
+          </ng-template>
+      </p-selectButton>
+      <p class="p-mt-3">
+  
+      </p>
+  </div>
+  
+    <!-- Carta info delle cripto -->
+    <p-card *ngIf="selectedCrypto!==null" class="card">
+        <h3>Info su: <strong>{{selectedCrypto.label}}</strong></h3>
+      <p>Ehy stronzo questi non sono affari tuoi...forse non hai capito, ma il tuo obiettivo è darmi il tuoi soldi 🫰🫰</p>
+    </p-card>
+
+    <!-- Carta dei Portafogli -->
+    <p-card class="card" header="I Tuoi portafogli" subheader="Visualizza o crea i tuoi portafogli">
+        <p-accordion [activeIndex]="0">
+            <p-accordionTab
+              *ngFor="let portafoglio of listaPortafogli"
+              [header]="portafoglio.simbolo"
+            >
+              <div class="m-0">
+                <ul>
+                  <li>Saldo: {{ portafoglio.saldo }}</li>
+                  <li>Creazione: {{ portafoglio.creazione | date: 'medium' }}</li>
+                  <li *ngIf="portafoglio.qrCode">
+                    <img
+                      [src]="portafoglio.qrCode"
+                      alt="QR Code"
+                      style="width: 100px; height: 100px"
+                    />
+                  </li>
+                </ul>
+              </div>
+            </p-accordionTab>
+          </p-accordion>
+        <ng-template pTemplate="footer">
+            <div class="flex gap-3 mt-1">
+                <p-button href="#" label="Crea un nuovo portafoglio" class="w-full"></p-button>
+                <p-button href="#" label="Vai alla pagina di gestione portafogli" class="w-full"></p-button>
+            </div>
+        </ng-template>
+    </p-card>
+
+    <!-- Carta delle Transazioni -->
+    <p-card class="card" header="Le tue transazioni" subheader="Qui sono mostrate le tue transazioni">
+        <p-table [value]="listaPortafogli" [tableStyle]="{ 'min-width': '50rem' }" [responsiveLayout]="'scroll'"
+            class="p-table">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Simbolo</th>
+                    <th>Indirizzo</th>
+                    <th>Stato</th>
+                    <th>Saldo</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-portafoglio>
+                <tr>
+                    <td>
+                        {{ portafoglio.simbolo }}
+                    </td>
+                    <td>{{ portafoglio.indirizzo }}</td>
+                    <td>
+                        <i [class]="'pi ' + (portafoglio.blocked ? 'pi-lock' : 'pi-unlock')" [ngStyle]="{
+                color: portafoglio.blocked ? 'red' : 'green'
+              }" aria-hidden="true"></i>
+                    </td>
+                    <td>{{ portafoglio.saldo }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+</div>
