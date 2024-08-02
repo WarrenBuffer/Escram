@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -32,9 +33,6 @@ public class Portafoglio implements Serializable{
 	@Column(name="saldo", nullable = false)
 	private double saldo;
 	
-	@Column(name = "blocked", nullable = false)
-	private boolean blocked = false;
-	
 	@Column(name="qrCode", nullable = false)
 	private String qrCode;
 
@@ -46,4 +44,7 @@ public class Portafoglio implements Serializable{
 	
 	@OneToMany(mappedBy = "toAddress")
 	private Set<Transazione> transazioni;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "fromIndirizzo")
+	private Set<RichiestaWithdraw> richiesteWithdraw;
 }

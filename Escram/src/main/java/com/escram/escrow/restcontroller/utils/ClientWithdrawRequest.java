@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateInvoiceRequest {	
-	private String toEmail;
-	private double amount;
-	private String descrizione;
+public class ClientWithdrawRequest {	
+	private String fromIndirizzo;
+	private String toIndirizzo;
+	private double importo;
 }

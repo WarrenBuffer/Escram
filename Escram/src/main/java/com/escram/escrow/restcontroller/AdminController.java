@@ -3,16 +3,21 @@ package com.escram.escrow.restcontroller;
 import java.util.List;
 import java.util.Optional;
 
+import org.jboss.resteasy.reactive.RestPath;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.escram.escrow.businesscomponent.AdminBC;
 import com.escram.escrow.businesscomponent.model.Cliente;
 import com.escram.escrow.businesscomponent.model.Crypto;
-import com.escram.escrow.restcontroller.utils.AddCryptoRequest;
+import com.escram.escrow.businesscomponent.model.RichiestaWithdraw;
+import com.escram.escrow.restcontroller.utils.UpdateCryptoRequest;
 import com.escram.escrow.restcontroller.utils.DeleteCryptoRequest;
 import com.escram.escrow.restcontroller.utils.LockUnlockRequest;
 import com.escram.escrow.restcontroller.utils.LoginRequest;
 import com.escram.escrow.service.ClienteService;
 import com.escram.escrow.service.CryptoService;
 import com.escram.escrow.service.InvoiceService;
+import com.escram.escrow.service.RichiestaWithdrawService;
 import com.escram.escrow.utils.BCResponse;
 import com.escram.escrow.utils.Costanti;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,6 +47,8 @@ public class AdminController implements Costanti{
 	private InvoiceService invoiceService;
 	@Inject
 	private AdminBC adminBC;
+	@Autowired
+	private RichiestaWithdrawService rws;
 	
 	@Path("/login")
 	@POST
@@ -67,7 +74,7 @@ public class AdminController implements Costanti{
 	@RolesAllowed(ADMIN_ROLE)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response transazioniIrrisolte() throws JsonProcessingException {
-		return Response.ok().entity(invoiceService.irrisolte().isEmpty() ? 0 : invoiceService.irrisolte()).build();
+		return Response.ok().entity(invoiceService.irrisolte()).build();
 	}
 	
 	@Path("/completate")
@@ -123,20 +130,21 @@ public class AdminController implements Costanti{
 		return Response.status(Status.UNAUTHORIZED).entity(cliente).build();
 	}
 	
-	@Path("/addcrypto")
+	@Path("/updatecrypto")
 	@POST
 	@RolesAllowed(ADMIN_ROLE)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response aggiungiCrypto(AddCryptoRequest request) {
-		Crypto crypto = new Crypto();
-		crypto.setNome(request.getNome());
-		crypto.setSimbolo(request.getSimbolo());
-		crypto.setUrlImmagine(request.getUrlImmagine());
-		if(cryptoService.findById(request.getSimbolo()).isPresent()) {
-			return Response.status(Status.UNAUTHORIZED).entity("Impossibile aggiungere una crypto esistente!").build();
+	public Response updateCrypto(UpdateCryptoRequest request) {
+		Optional<Crypto> cryptoOpt = cryptoService.findById(request.getSimbolo());
+		if(cryptoOpt.isEmpty()) {
+			return Response.status(Status.UNAUTHORIZED).entity("Crypto non trovata.").build();
 		}
+		
+		Crypto crypto = cryptoOpt.get();
+		crypto.setNome(request.getNome());
+		crypto.setUrlImmagine(request.getUrlImmagine());
 		cryptoService.save(crypto);
-		return Response.ok().entity("Crypto aggiunta correttamente!").build();
+		return Response.ok().entity("Crypto aggiornata correttamente.").build();
 	}
 	
 	@Path("/getcrypto")
@@ -156,5 +164,24 @@ public class AdminController implements Costanti{
 		
 		cryptoService.delete(cryptoOpt.get());
 		return Response.ok().entity(cryptoService.findAll()).build();
+	}
+	
+	@Path("/getwithdrawrequests")
+	@GET
+	@RolesAllowed(ADMIN_ROLE)
+	public Response getWithdrawRequests() {
+		return Response.ok().entity(rws.findAll()).build();
+	}
+	
+	@Path("/cancelwithdrawrequest/{id}")
+	@GET
+	@RolesAllowed(ADMIN_ROLE)
+	public Response getWithdrawRequests(@RestPath long id) {
+		Optional<RichiestaWithdraw> rw = rws.findById(id);
+		if (rw.isEmpty())
+			return Response.status(Status.BAD_REQUEST).entity("Richiesta non trovata.").build();
+		
+		rws.delete(rw.get());
+		return Response.ok().entity("Richiesta cancellata con successo.").build();
 	}
 }

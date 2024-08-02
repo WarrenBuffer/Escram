@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddCryptoRequest {
+public class UpdateCryptoRequest {
 	private String simbolo;
 	private String nome;
 	private String urlImmagine;

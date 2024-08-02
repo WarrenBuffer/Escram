@@ -15,6 +15,9 @@ insert into notificaIdSeq values ( 1 );
 create table Portafoglio (indirizzo varchar(255) not null, blocked bit not null, creazione datetime(6) not null, emailCliente varchar(255), qrCode varchar(255) not null, saldo float(53) not null, scadenza datetime(6) not null, simbolo varchar(255), primary key (indirizzo)) engine=InnoDB;
 create table Transazione (id varchar(255) not null, amount float(53) not null, date datetime(6) not null, fees float(53) not null, tipo enum ('DEPOSITO','PRELIEVO') not null, toAddress varchar(255), txId varchar(255) not null, primary key (id)) engine=InnoDB;
 alter table Portafoglio add constraint FK1ud685q7o86j7o7skdnnre5r4 foreign key (simbolo) references Crypto (simbolo);
+create table RichiestaWithdraw (id bigint not null, emailCliente varchar(255), primary key (id)) engine=InnoDB;
+create table withdrawIdSeq (next_val bigint) engine=InnoDB;
+insert into withdrawIdSeq values ( 1 );
 
 -- Password: Password01$
 insert into crypto values ('TCN', 'TestCoin', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/180px-No_image_available.svg.png');

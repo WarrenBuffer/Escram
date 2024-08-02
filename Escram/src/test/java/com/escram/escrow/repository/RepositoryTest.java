@@ -137,7 +137,6 @@ class RepositoryTest {
 		n1.setEmailCliente("email2@email.com");
 		n1.setInvoiceId("2");
 		
-		p1.setBlocked(false);
 		p1.setCreazione(new Date());
 		p1.setScadenza(new Date());
 		p1.setCrypto(test1);
@@ -147,7 +146,6 @@ class RepositoryTest {
 		p1.setSaldo(1000);
 		p1.setTransazioni(new HashSet<Transazione>());
 		
-		p2.setBlocked(false);
 		p2.setCreazione(new Date());
 		p2.setScadenza(new Date());
 		p2.setCrypto(test2);
@@ -275,7 +273,6 @@ class RepositoryTest {
 		assertNotEquals(0, listaPortafogli.size());
 		assertFalse(listaPortafogli.isEmpty());
 		Portafoglio a = new Portafoglio();
-		a.setBlocked(false);
 		a.setCreazione(new Date());
 		a.setScadenza(new Date());
 		a.setCrypto(test1);

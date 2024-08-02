@@ -5,6 +5,7 @@ import org.jboss.resteasy.reactive.RestPath;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.escram.escrow.businesscomponent.ClienteBC;
+import com.escram.escrow.restcontroller.utils.ClientWithdrawRequest;
 import com.escram.escrow.restcontroller.utils.CreaPortafoglioRequest;
 import com.escram.escrow.restcontroller.utils.CreateInvoiceRequest;
 import com.escram.escrow.restcontroller.utils.GetInvoiceRequest;
@@ -86,10 +87,28 @@ public class ClienteController implements Costanti {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
+	
+	@Path("/requestWithdraw")
+	@POST
+	@RolesAllowed(CLIENT_ROLE)
+	public Response requestWithdraw(ClientWithdrawRequest request) {
+		try {
+			String fromEmail = jwt.getName();
+			BCResponse bcRes = clienteBC.clientWithdrawRequest(fromEmail, request.getFromIndirizzo(), request.getToIndirizzo(), request.getImporto());
+
+			if (!bcRes.isOk())
+				return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
+
+			return Response.status(Response.Status.OK).entity(bcRes.getMessage()).build();
+		} catch (Exception exc) {
+			exc.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
 
 	@Path("/withdraw/{simbolo}")
 	@POST
-	@RolesAllowed(CLIENT_ROLE)
+	@RolesAllowed(ADMIN_ROLE)
 	public Response withdraw(@RestPath String simbolo, WithdrawRequest request) {
 		try {
 			BCResponse bcRes = clienteBC.preleva(simbolo, request.getToAddress(), request.getAmount());

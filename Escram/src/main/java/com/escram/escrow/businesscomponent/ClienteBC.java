@@ -15,6 +15,7 @@ import com.escram.escrow.businesscomponent.model.Crypto;
 import com.escram.escrow.businesscomponent.model.Invoice;
 import com.escram.escrow.businesscomponent.model.Notifica;
 import com.escram.escrow.businesscomponent.model.Portafoglio;
+import com.escram.escrow.businesscomponent.model.RichiestaWithdraw;
 import com.escram.escrow.businesscomponent.model.Transazione;
 import com.escram.escrow.businesscomponent.model.enums.StatoTransazione;
 import com.escram.escrow.businesscomponent.model.enums.TipoTransazione;
@@ -29,6 +30,7 @@ import com.escram.escrow.service.CryptoService;
 import com.escram.escrow.service.InvoiceService;
 import com.escram.escrow.service.NotificaService;
 import com.escram.escrow.service.PortafoglioService;
+import com.escram.escrow.service.RichiestaWithdrawService;
 import com.escram.escrow.service.TransazioneService;
 import com.escram.escrow.utils.BCResponse;
 import com.escram.escrow.utils.Costanti;
@@ -54,6 +56,8 @@ public class ClienteBC implements Costanti {
 	InvoiceService is;
 	@Autowired
 	NotificaService ns;
+	@Autowired
+	RichiestaWithdrawService rws;
 	
 	private boolean validateCredentials(String nome, String cognome, String email, String password) {
 		if (nome == null || cognome == null || email == null || password == null)
@@ -140,7 +144,6 @@ public class ClienteBC implements Costanti {
 		portafoglio.setEmailCliente(email);
 		portafoglio.setQrCode(qrCode);
 		portafoglio.setSaldo(0);
-		portafoglio.setBlocked(false);
 		portafoglio.setCreazione(new Date());
 		Calendar cal = Calendar.getInstance(); 
 		cal.add(Calendar.MONTH, 3);
@@ -149,6 +152,32 @@ public class ClienteBC implements Costanti {
 		
 		ps.save(portafoglio);
 		return new BCResponse(true, json);
+	}
+	
+	public BCResponse clientWithdrawRequest(String email, String fromIndirizzo, String toIndirizzo, Double importo) {
+		if (email == null || fromIndirizzo == null || toIndirizzo == null || importo == null || importo <= 0)
+			return new BCResponse(false, "Valori null.");
+		
+		Optional<Cliente> clienteOpt = cs.findById(email);
+		if (clienteOpt.isEmpty()) 
+			return new BCResponse(false, "Simbolo non esistente.");
+		
+		Cliente cliente = clienteOpt.get();
+		System.out.println(fromIndirizzo);
+		System.out.println(cliente);
+		for (Portafoglio p : cliente.getPortafogli()) {
+			if (p.getIndirizzo().equals(fromIndirizzo) && p.getSaldo() > importo) {
+				RichiestaWithdraw rw = new RichiestaWithdraw();
+				rw.setFromIndirizzo(fromIndirizzo);
+				rw.setToIndirizzo(toIndirizzo);
+				rw.setImporto(importo);
+				rws.save(rw);
+				
+				return new BCResponse(true, "Richiesta salvata con successo.");
+			}
+		}
+		
+		return new BCResponse(false, "From indirizzo non trovato o saldo insufficiente.");
 	}
 	
 	public BCResponse preleva(String simbolo, String toAddress, Double amount) throws URISyntaxException, JsonMappingException, JsonProcessingException {
@@ -169,7 +198,7 @@ public class ClienteBC implements Costanti {
 		
 		if (rootNode.get("flag").asInt() != 1) 
 			return new BCResponse(false, "Chiamata a CoinRemitter fallita.");
-		
+	
 		JsonNode data = rootNode.get("data");
 		String id = data.get("id").asText();
 		String txId = data.get("txid").asText();
@@ -201,6 +230,10 @@ public class ClienteBC implements Costanti {
 		
 		if (cryptoOpt.isEmpty() || fromOpt.isEmpty() || toOpt.isEmpty()) {
 			return new BCResponse(false, "Simbolo non esistente.");
+		}
+		
+		if (fromOpt.get().getTipologia() != TipologiaCliente.VENDITORE || toOpt.get().getTipologia() != TipologiaCliente.COMPRATORE) {
+			return new BCResponse(false, "Il from deve essere un venditore, il to un compratore.");
 		}
 		
 		URI apiUri = new URI(COIN_REMITTER_URL + simbolo);
