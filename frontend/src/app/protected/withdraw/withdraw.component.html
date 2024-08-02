@@ -1,4 +1,31 @@
 <app-navbar />
 <app-loading [loading]="loading"/>
 <p-card header="Withdraw" *ngIf="!loading">
+    <h3 *ngIf="requests.length === 0">Nessun richiesta presente</h3>
+    <p-table *ngIf="requests.length !== 0"  [value]="requests" [paginator]="true" [rows]="5" styleClass="p-datatable-striped"  [rowsPerPageOptions]="[5, 10, 20]" styleClass="p-datatable-striped">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Id</th>
+                    <th>Indirizzo mittente</th>
+                    <th>Indirizzo destinatario</th>
+                    <th>Importo</th>
+                    <th>Approva</th>
+                    <th>Cancella</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-request>
+                <tr>
+                    <td>{{request.id}}</td>
+                    <td>{{request.fromIndirizzo}}</td>
+                    <td>{{request.toIndirizzo}}</td>
+                    <td>{{request.importo | currency}}</td>
+                    <td>
+                        <p-button label="Approva" severity="success" icon="pi pi-check-circle" size="small" [disabled]="true" (onClick)="approve(request.id, request.importo)"/>
+                    </td>
+                    <td>
+                        <p-button label="Cancella" severity="danger" icon="pi pi-times-circle" size="small" (onClick)="cancel(request.id, request.importo)"/>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
 </p-card>

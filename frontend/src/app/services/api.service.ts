@@ -100,8 +100,35 @@ export class ApiService {
       })
     );
   }
-
+  
   getWithdrawRequests() {
+    return this._http.get(`${this.basePath}/getwithdrawrequests`, {
+      headers: {
+        'Authorization': this.storageService.getItem('token') ?? ''
+      },
+    }).pipe(
+      catchError((err) => {
+        if (err.status === 401) 
+          this.authService.logout();
+        return err;
+      })
+    );
+    
+  }
+  
+  cancelWithdrawRequests(id: number) {
+    return this._http.get(`${this.basePath}/cancelwithdrawrequest/${id}`, {
+      headers: {
+        'Authorization': this.storageService.getItem('token') ?? ''
+      },
+      responseType: 'text'
+    }).pipe(
+      catchError((err) => {
+        if (err.status === 401) 
+          this.authService.logout();
+        return err;
+      })
+    );
     
   }
 }
