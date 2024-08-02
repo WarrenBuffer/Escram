@@ -109,7 +109,8 @@ public class ClienteController implements Costanti {
 	@RolesAllowed(CLIENT_ROLE)
 	public Response createInvoice(@RestPath String simbolo, CreateInvoiceRequest request) {
 		try {
-			BCResponse bcRes = clienteBC.createInvoice(simbolo, request.getFromEmail(), request.getToEmail(), request.getAmount(), request.getDescrizione());
+			String fromEmail = jwt.getName();
+			BCResponse bcRes = clienteBC.createInvoice(simbolo, fromEmail, request.getToEmail(), request.getAmount(), request.getDescrizione());
 
 			if (!bcRes.isOk())
 				return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
@@ -119,6 +120,13 @@ public class ClienteController implements Costanti {
 			exc.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
+	}
+	
+	@Path("/getCrypto")
+	@GET
+	@RolesAllowed(CLIENT_ROLE)
+	public Response getCrypto(@RestPath String simbolo) {
+		return Response.status(Response.Status.OK).entity(clienteBC.getCrypto().getMessage()).build();
 	}
 
 	@Path("/getInvoice/{simbolo}")

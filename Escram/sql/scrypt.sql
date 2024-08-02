@@ -18,5 +18,6 @@ alter table Portafoglio add constraint FK1ud685q7o86j7o7skdnnre5r4 foreign key (
 
 -- Password: Password01$
 insert into crypto values ('TCN', 'TestCoin', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/180px-No_image_available.svg.png');
+insert into admin values ('admin@escram.com', false, 'Rossi', 'Mario', '$2a$10$efOjSSxwHIb0GWyHUzr0AOgBIU7aYkT/Be82NnxxywO22EgOiq2OK');
 insert into cliente values ('mario.rossi@gmail.com', false, 'Rossi', 'Mario', '$2a$10$efOjSSxwHIb0GWyHUzr0AOgBIU7aYkT/Be82NnxxywO22EgOiq2OK', 'COMPRATORE');
 insert into cliente values ('giorgio.verdi@gmail.com', false, 'Verdi', 'Giorgio', '$2a$10$efOjSSxwHIb0GWyHUzr0AOgBIU7aYkT/Be82NnxxywO22EgOiq2OK', 'VENDITORE');

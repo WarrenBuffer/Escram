@@ -128,7 +128,7 @@ public class ClienteBC implements Costanti {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(json);
 		
-		if (rootNode.get("flag").asInt() == 0) 
+		if (rootNode.get("flag").asInt() != 1) 
 			return new BCResponse(false, "Chiamata a CoinRemitter fallita.");
 		
 		JsonNode data = rootNode.get("data");
@@ -167,7 +167,7 @@ public class ClienteBC implements Costanti {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(json);
 		
-		if (rootNode.get("flag").asInt() == 0) 
+		if (rootNode.get("flag").asInt() != 1) 
 			return new BCResponse(false, "Chiamata a CoinRemitter fallita.");
 		
 		JsonNode data = rootNode.get("data");
@@ -210,7 +210,7 @@ public class ClienteBC implements Costanti {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(json);
 		
-		if (rootNode.get("flag").asInt() == 0) 
+		if (rootNode.get("flag").asInt() != 1) 
 			return new BCResponse(false, "Chiamata a CoinRemitter fallita.");
 		
 		JsonNode data = rootNode.get("data");
@@ -254,7 +254,7 @@ public class ClienteBC implements Costanti {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(json);
 		
-		if (rootNode.get("flag").asInt() == 0) 
+		if (rootNode.get("flag").asInt() != 1) 
 			return new BCResponse(false, "Chiamata a CoinRemitter fallita.");
 		
 		return new BCResponse(true, json);
@@ -267,4 +267,9 @@ public class ClienteBC implements Costanti {
 		
 		return new BCResponse(true, json);
 	}
+	
+	public BCResponse getCrypto() {
+		return new BCResponse(true, crys.findAll());
+	}
+	
 }
