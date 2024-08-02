@@ -1,0 +1,24 @@
+<div class="mb-4">
+    <p-menubar *ngIf="isAuthenticated()" [model]="items" styleClass="p-element gap-4">
+        <ng-template pTemplate="start">
+            <a routerLink="/">
+                <img src="favicon.ico" width="50px">
+            </a>
+        </ng-template>
+        <ng-template pTemplate="end">
+            <p-button label="Logout" icon="pi pi-sign-out" size="small" (onClick)="logout()" />
+        </ng-template>
+    </p-menubar>
+    <p-menubar *ngIf="!isAuthenticated()" styleClass="p-element">
+        <ng-template pTemplate="start">
+            <a routerLink="/">
+                <img src="favicon.ico" width="50px">
+            </a>
+        </ng-template>
+        <ng-template pTemplate="end">
+            <a routerLink="/login">
+                <p-button label="Login" icon="pi pi-sign-in" size="small" />
+            </a>
+        </ng-template>
+    </p-menubar>
+</div>

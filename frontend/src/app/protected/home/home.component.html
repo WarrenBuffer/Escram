@@ -1,0 +1,34 @@
+<app-navbar />
+<app-loading [loading]="loading"/>
+<p-card header="Home" *ngIf="!loading">
+    <h3 *ngIf="clienti.length === 0">Nessun cliente presente</h3>
+    <p-table *ngIf="clienti.length !== 0"  [value]="clienti" [paginator]="true" [rows]="5" styleClass="p-datatable-striped"  [rowsPerPageOptions]="[5, 10, 20]" styleClass="p-datatable-striped">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Email</th>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                    <th>Tipologia</th>
+                    <th>N. portafogli</th>
+                    <th>N. invoice</th>
+                    <th>Bloccato</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-cliente>
+                <tr>
+                    <td>{{cliente.email}}</td>
+                    <td>{{cliente.nome}}</td>
+                    <td>{{cliente.cognome}}</td>
+                    <td>{{cliente.tipologia}}</td>
+                    <td>{{cliente.portafogli.length}}</td>
+                    <td>{{cliente.invoices.length}}</td>
+                    <td *ngIf="cliente.blocked">
+                        <p-button label="Sblocca" severity="success" icon="pi pi-unlock" size="small" (onClick)="lockUnlock(cliente.email)"/>
+                    </td>
+                    <td *ngIf="!cliente.blocked">
+                        <p-button label="Blocca" severity="danger" icon="pi pi-lock" size="small" (onClick)="lockUnlock(cliente.email)"/>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+</p-card>

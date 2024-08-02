@@ -1,0 +1,36 @@
+<app-navbar />
+<app-loading [loading]="loading"/>
+<p-card header="Dispute" *ngIf="!loading">
+    <h3 *ngIf="invoices.length === 0">Nessun invoice presente</h3>
+    <p-table *ngIf="invoices.length !== 0" [value]="invoices" [paginator]="true" [rows]="5" styleClass="p-datatable-striped"
+        [rowsPerPageOptions]="[5, 10, 20]" styleClass="p-datatable-striped">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Id</th>
+                <th>Apertura</th>
+                <th>Scadenza</th>
+                <th>Stato</th>
+                <th>Url</th>
+                <th>Importo</th>
+                <th>Email venditore</th>
+                <th>Email compratore </th>
+                <th>Stato venditore</th>
+                <th>Stato compratore</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-invoice>
+            <tr>
+                <td>{{invoice.id}}</td>
+                <td>{{invoice.dataApertura | date:"dd/MM/yyyy HH:mm:ss"}}</td>
+                <td>{{invoice.dataScadenza | date:"dd/MM/yyyy HH:mm:ss"}}</td>
+                <td>{{invoice.status}}</td>
+                <td>{{invoice.url}}</td>
+                <td>{{invoice.usdAmount}}</td>
+                <td>{{invoice.emailSrc}}</td>
+                <td>{{invoice.emailDst}}</td>
+                <td>{{invoice.statoSrc}}</td>
+                <td>{{invoice.statoDst}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>

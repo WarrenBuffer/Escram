@@ -1,0 +1,10 @@
+@import "primeng/resources/themes/vela-orange/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+@import 'primeflex/primeflex.scss';
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}

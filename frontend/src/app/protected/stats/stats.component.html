@@ -1,0 +1,61 @@
+<app-navbar />
+<p-card header="Statistiche">
+    <h3 *ngIf="clienti.length === 0">Nessun cliente presente</h3>
+    <div *ngIf="clienti.length !== 0">
+        <div class="grid">
+            <div class="col">
+                <p-panel header="Numero clienti">
+                    <p>{{stats.clienti}}</p>
+                </p-panel>
+            </div>
+            <div class="col">
+                <p-panel header="Numero compratori">
+                    <p>
+                        {{stats.compratori}}
+                    </p>
+                </p-panel>
+            </div>
+            <div class="col">
+                <p-panel header="Numero venditori">
+                    <p>
+                        {{stats.venditori}}
+                    </p>
+                </p-panel>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col">
+                <p-panel header="Numero portafogli">
+                    <p>{{stats.portafogli}}</p>
+                </p-panel>
+            </div>
+            <div class="col">
+                <p-panel header="Saldo totale">
+                    <p>
+                        {{stats.saldo | currency}}
+                    </p>
+                </p-panel>
+            </div>
+            <div class="col">
+                <p-panel header="Numero invoice">
+                    <p>
+                        {{stats.invoices}}
+                    </p>
+                </p-panel>
+            </div>
+        </div>
+    
+        <div class="grid">
+            <div class="col-6">
+                <p-panel *ngIf="this.stats.invoices !== 0" header="Stato invoices" class="card">
+                    <p-chart type="pie"  height="300px" [data]="pieData" [options]="pieOptions" />
+                </p-panel>
+            </div>
+            <div class="col-6">
+                <p-panel *ngIf="this.stats.invoices !== 0" header="Confermati/annullati" class="card">
+                    <p-chart type="bar"  height="300px" [data]="barData" [options]="barOptions" />
+                </p-panel>
+            </div>
+        </div>
+    </div>
+</p-card>
