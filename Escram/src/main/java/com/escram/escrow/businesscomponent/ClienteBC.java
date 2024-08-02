@@ -263,7 +263,7 @@ public class ClienteBC implements Costanti {
 		
 		Notifica notifica = new Notifica();
 		notifica.setEmailCliente(toEmail);
-		notifica.setInvoiceId(id);
+		notifica.setUrlInvoice(url);
 		ns.save(notifica);
 		
 		return new BCResponse(true, json);

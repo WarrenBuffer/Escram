@@ -26,7 +26,7 @@ public class Notifica implements Serializable{
 	private long id;
 	@JoinColumn(name = "email")
 	private String emailCliente;	
-	@JoinColumn(name = "id")
-	private String invoiceId;
+	@JoinColumn(name = "url")
+	private String urlInvoice;
 	
 }

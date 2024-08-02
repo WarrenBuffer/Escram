@@ -132,10 +132,8 @@ class RepositoryTest {
 		c2.setTipologia(TipologiaCliente.VENDITORE);
 		
 		n1.setEmailCliente("email2@email.com");
-		n1.setInvoiceId("3");
 		
 		n1.setEmailCliente("email2@email.com");
-		n1.setInvoiceId("2");
 		
 		p1.setCreazione(new Date());
 		p1.setScadenza(new Date());
@@ -260,7 +258,6 @@ class RepositoryTest {
 		assertFalse(listaNotifiche.isEmpty());
 		Notifica a = new Notifica();
 		a.setEmailCliente("email2@email.com");
-		a.setInvoiceId("1");
 		Notifica testSave = notificaService.save(a);
 		assertEquals(a.getId(), testSave.getId());
 		Optional<Notifica> notificaOptTest = notificaService.findById(a.getId());
