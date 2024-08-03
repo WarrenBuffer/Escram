@@ -33,6 +33,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { MenubarModule } from 'primeng/menubar';
 import { ImageModule } from 'primeng/image';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ListaPortafogliComponent } from './lista-portafogli/lista-portafogli.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     LoadingComponent,
     NavbarComponent,
     HomeComponent,
+    ListaPortafogliComponent
   ],
   imports: [
     BrowserModule,

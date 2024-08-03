@@ -23,25 +23,54 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.crypto-option {
+    display: flex;
+    /* Usa il layout Flexbox */
+    align-items: center;
+    /* Allinea verticalmente al centro */
+    gap: 0.5rem;
+    /* Spazio tra immagine e testo */
+}
+
 .crypto-icon {
     width: 24px;
+    /* Larghezza fissa dell'immagine */
     height: 24px;
-    object-fit: contain;
-  }
-  
-  .p-selectbutton .p-button {
+    /* Altezza fissa dell'immagine */
+    object-fit: cover;
+    /* Assicurati che l'immagine sia ridimensionata correttamente */
+}
+
+.crypto-label {
+    font-size: 14px;
+    /* Dimensione del testo */
+    line-height: 1.5;
+    /* Altezza della linea per migliorare la leggibilità */
+}
+
+.crypto-header-title {
+    display: flex;
+    /* Usa il layout Flexbox */
+    align-items: center;
+    /* Allinea verticalmente al centro */
+    gap: 0.5rem;
+    /* Spazio tra immagine e testo */
+}
+
+
+.p-selectbutton .p-button {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .p-selectbutton .p-button .p-button-label {
+}
+
+.p-selectbutton .p-button .p-button-label {
     margin-left: 0.5rem;
-  }
-  
-  .p-selectbutton .p-button .p-button-icon {
+}
+
+.p-selectbutton .p-button .p-button-icon {
     margin-right: 0.5rem;
-  }
+}
 
 /* Media Queries per la Responsività */
 @media (min-width: 600px) {

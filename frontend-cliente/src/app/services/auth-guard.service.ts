@@ -21,6 +21,7 @@ export class AuthGuardService {
         case 'home': return this.bearer !== '' ? true : this._router.createUrlTree(['/loginEscram']);
         case 'invoice': return this.bearer !== '' ? true : this._router.createUrlTree(['/loginEscram']);
         case 'transazioni': return this.bearer !== '' ? true : this._router.createUrlTree(['/loginEscram']);
+        case 'listaPortafogli': return this.bearer !== '' ? true : this._router.createUrlTree(['/loginEscram']);
         default: return false;
       }
     }

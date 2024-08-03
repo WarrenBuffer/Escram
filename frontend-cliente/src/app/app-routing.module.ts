@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PortafoglioComponent } from './nuovo-portafoglio/nuovo-portafoglio.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { TransazioneComponent } from './transazione/transazione.component';
+import { ListaPortafogliComponent } from './lista-portafogli/lista-portafogli.component';
 import { HomeComponent } from './home/home.component';
 
 import { mapToCanActivate, RouterModule, Routes } from '@angular/router';
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'signupEscram', canActivate: mapToCanActivate([AuthGuardService]), component: SignUpComponent},
   { path: 'nuovoPortafoglio', canActivate: mapToCanActivate([AuthGuardService]), component: PortafoglioComponent },
   { path: 'invoice',canActivate: mapToCanActivate([AuthGuardService]), component: InvoiceComponent},
+  { path: 'listaPortafogli',canActivate: mapToCanActivate([AuthGuardService]), component: ListaPortafogliComponent},
 
   { path: 'transazioni',canActivate: mapToCanActivate([AuthGuardService]), component: TransazioneComponent},
   { path: 'home',canActivate: mapToCanActivate([AuthGuardService]), component: HomeComponent},
