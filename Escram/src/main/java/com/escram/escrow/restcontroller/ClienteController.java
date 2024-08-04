@@ -58,7 +58,7 @@ public class ClienteController implements Costanti {
 	}
 	
 	@Path("/getCliente")
-	@POST
+	@GET
 	@RolesAllowed(CLIENT_ROLE)
 	public Response getCliente() {
 		String email = jwt.getName();
@@ -76,7 +76,9 @@ public class ClienteController implements Costanti {
 	@RolesAllowed(CLIENT_ROLE)
 	public Response creaPortafoglio(@RestPath String simbolo, CreaPortafoglioRequest request) {
 		try {
-			BCResponse bcRes = clienteBC.creaPortafoglio(simbolo, request.getEmail(), request.getLabel());
+			String email = jwt.getName();
+			System.out.println(email + simbolo + request.getLabel());
+			BCResponse bcRes = clienteBC.creaPortafoglio(simbolo, email, request.getLabel());
 
 			if (!bcRes.isOk())
 				return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
