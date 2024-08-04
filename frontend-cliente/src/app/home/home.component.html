@@ -1,91 +1,78 @@
 <app-navbar />
-<div class="p-d-flex p-flex-wrap p-jc-center card-container">
-  <div class="p-d-flex p-flex-column p-ai-center p-mt-4">
-    <p-selectButton [options]="cryptocurrencies" [(ngModel)]="selectedCrypto" optionLabel="label">
-      <ng-template let-crypto pTemplate="crypto">
-        <div class="crypto-option">
-          <img [src]="crypto.urlImmagine" class="crypto-icon" />
-          <span class="crypto-label">{{crypto.simbolo}}</span>
-        </div>
-      </ng-template>
-    </p-selectButton>
-    <p class="p-mt-3">
-    </p>
-  </div>
-
-  <!-- Carta info delle cripto -->
-  <p-card *ngIf="selectedCrypto !== null" class="card">
-    <div class="crypto-header-title">
-      <h3>
-        Info su: <strong>{{selectedCrypto.simbolo}} ({{selectedCrypto.nome}}) </strong>
-      </h3>
-      <img [src]="selectedCrypto.urlImmagine" class="crypto-icon" />
+<app-loading [loading]="loading" />
+<div *ngIf="!loading" class="flex flex-column gap-4">
+  <p-card header="I Tuoi portafogli">
+    <h3 *ngIf="listaPortafogli.length === 0">Nessun portafoglio presente</h3>
+    <div class="mt-2 grid gap-4" *ngIf="listaPortafogli.length !== 0">
+      <div class="row" *ngFor="let portafoglio of listaPortafogli">
+        <p-panel [toggleable]="true">
+          <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+              <p-avatar [image]="portafoglio.crypto.urlImmagine" shape="circle" />
+              <span class="font-bold">
+                {{portafoglio.crypto.simbolo}}: {{portafoglio.saldo | currency}}
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="icons">
+            <button class="p-panel-header-icon p-link mr-2" (click)="menu.toggle($event)">
+              <span class="pi pi-cog"></span>
+            </button>
+            <p-menu #menu id="config_menu" [model]="items" (onFocus)="select(portafoglio)" [popup]="true" />
+          </ng-template>
+          <p class="m-0">
+            {{portafoglio.indirizzo}}
+          </p>
+        </p-panel>
+      </div>
     </div>
-    <p>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae sint veniam nulla iste temporibus ab, optio
-      tempore. Molestiae explicabo nobis culpa doloribus suscipit omnis, nesciunt libero ratione delectus? Ex, deleniti.
-    </p>
   </p-card>
 
-  <!-- Carta dei Portafogli -->
-  <p-card class="card" header="I Tuoi portafogli" subheader="Visualizza o crea i tuoi portafogli">
-    <p-accordion [activeIndex]="0">
-      <p-accordionTab *ngFor="let portafoglio of listaPortafogli" [header]="portafoglio.simbolo">
-        <div class="m-0">
-          <ul>
-            <li>Saldo: {{ portafoglio.saldo }}</li>
-            <li>Creazione: {{ portafoglio.creazione | date: 'medium' }}</li>
-            <li *ngIf="portafoglio.qrCode">
-              <img [src]="portafoglio.qrCode" alt="QR Code" style="width: 100px; height: 100px" />
-            </li>
-          </ul>
-        </div>
-      </p-accordionTab>
-    </p-accordion>
-    <ng-template pTemplate="footer">
-      <a class="flex">
-        <p-button label = "Crea nuovo portafoglio" class="mr-2" routerLink="/nuovoPortafoglio"/>
-        <p-button label="Visualizza info complete suoi tuoi portafogli" routerLink="/listaPortafogli"  />
-    </a>
-    </ng-template>
-  </p-card>
-
-  <!-- Carta delle Transazioni -->
-  <p-card class="card" header="Le tue transazioni" subheader="Qui sono mostrate le tue transazioni">
-    <p-table [value]="listaTransazioni" [tableStyle]="{ 'min-width': '50rem' }" [responsiveLayout]="'scroll'"
-      class="p-table">
-      <ng-template pTemplate="header">
-        <tr>
-          <th><strong style="color: #FFD54F;">Id</strong></th>
-          <th><strong style="color: #FFD54F;">Ammontare</strong></th>
-          <th><strong style="color: #FFD54F;">Data</strong></th>
-          <th><strong style="color: #FFD54F;">Fees</strong></th>
-          <th><strong style="color: #FFD54F;">Tipo</strong></th>
-          <th><strong style="color: #FFD54F;">Indirizzo portafoglio</strong></th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-transazione>
-        <tr>
-          <td>
-            {{ transazione.id }}
-          </td>
-          <td>
-            {{ transazione.ammontare }}
-          </td>
-          <td>
-            {{ transazione.data }}
-          </td>
-          <td>
-            {{ transazione.fees }}
-          </td>
-          <td>
-            {{ transazione.tipo }}
-          </td>
-          <td>
-            {{ transazione.toAddress }}
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </p-card>
+  <p-dialog [modal]="true" [(visible)]="visible" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [maximizable]="true" [draggable]="false" header="Dettagli" *ngIf="selectedPortafoglio">
+    <div class="flex flex-column gap-2">
+      <p-panel>
+        <ng-template pTemplate="header">
+          <div class="flex align-items-center gap-2">
+            <p-avatar [image]="selectedPortafoglio.crypto.urlImmagine" shape="circle" />
+            <span class="font-bold">
+              {{selectedPortafoglio.crypto.simbolo}}: {{selectedPortafoglio.saldo | currency}}
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <p>Indirizzo: {{selectedPortafoglio.indirizzo}}</p>
+          <p>Creazione: {{selectedPortafoglio.creazione | date}}</p>
+          <p>Scadenza: {{selectedPortafoglio.scadenza| date}}</p>
+          <p>Transazioni: {{selectedPortafoglio.transazioni.length}}</p>
+          <p>Withdraws: {{selectedPortafoglio.richiesteWithdraw.length}}</p>
+          <p>
+            <img [src]="selectedPortafoglio.qrCode" width="150px">
+          </p>
+        </ng-template>
+      </p-panel>
+      <p-panel header="Depositi/prelievi" *ngIf="selectedPortafoglio.transazioni.length > 0">
+        <p-table [value]="selectedPortafoglio.transazioni" [tableStyle]="{ 'min-width': '50rem' }"
+          [responsiveLayout]="'scroll'" class="p-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th><strong style="color: #FFD54F;">Simbolo</strong></th>
+              <th><strong style="color: #FFD54F;">Indirizzo</strong></th>
+              <th><strong style="color: #FFD54F;">Saldo</strong></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-transazione>
+            <tr>
+              <td>{{ transazione.txId }}</td>
+              <td>{{ transazione.amount }}</td>
+              <td>{{ transazione.date | date }}</td>
+              <td>{{ transazione.fees | currency }}</td>
+              <td>{{ transazione.tipo }}</td>
+              <td>{{ transazione.toAddress }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-panel>
+    </div>
+  </p-dialog>
 </div>

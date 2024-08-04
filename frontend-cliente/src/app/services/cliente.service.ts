@@ -9,15 +9,12 @@ export class ClienteService {
   clienteSessione: Cliente | undefined;
   constructor() { }
 
-
-  getSessionClient(): Cliente | undefined{
+  getSessionClient(): Cliente {
     const cliente: string | null = sessionStorage.getItem("cliente");
-    if(cliente==null){
-      return undefined;
-    }else{
-      return JSON.parse(cliente);
-    }
+    return cliente !== null ? JSON.parse(cliente) : new Cliente();
+    // return cliente !== null ? JSON.parse(cliente) : null;
   }
+  /*
   getSessionEmail(): string | undefined{
     const cliente: string | null = sessionStorage.getItem("cliente");
     if(cliente==null){
@@ -42,19 +39,15 @@ export class ClienteService {
       return JSON.parse(cliente).cognome;
     }
   }
-  getSessionTipologia(): string | undefined{
+  getSessionTipologia(): string | null{
     const cliente: string | null = sessionStorage.getItem("cliente");
-    if(cliente==null){
-      return undefined;
-    }else{
-      return JSON.parse(cliente).tipologia;
-    }
+    return cliente !== null ? JSON.parse(cliente).tipologia : null;
   }
 
-  getSessionPortafogli():Portafoglio[] | undefined{
+  getSessionPortafogli():Portafoglio[]{
     const cliente: string | null = sessionStorage.getItem("cliente");
     if(cliente==null){
-      return undefined;
+      return [];
     }else{
       return JSON.parse(cliente).portafogli;
     }
@@ -68,5 +61,5 @@ export class ClienteService {
       return JSON.parse(cliente).notifiche;
     }
   }
-  
+   */
 }

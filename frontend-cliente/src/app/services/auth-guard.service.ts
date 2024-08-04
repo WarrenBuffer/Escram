@@ -15,14 +15,13 @@ export class AuthGuardService {
     for(let i=0; i<route.url.length; i++){
       const path=route.url[i].path;
       switch (path) {
-        case 'loginEscram': return this.bearer !== '' ? this._router.createUrlTree(['/home']) : true;
-        case 'signupEscram': return this.bearer !== '' ? this._router.createUrlTree(['/home']) : true;
-        case 'nuovoPortafoglio': return this.bearer !== '' ? true : this._router.createUrlTree(['/loginEscram']);
-        case 'home': return this.bearer !== '' ? true : this._router.createUrlTree(['/loginEscram']);
-        case 'invoice': return this.bearer !== '' ? true : this._router.createUrlTree(['/loginEscram']);
-        case 'transazioni': return this.bearer !== '' ? true : this._router.createUrlTree(['/loginEscram']);
-        case 'listaPortafogli': return this.bearer !== '' ? true : this._router.createUrlTree(['/loginEscram']);
-        default: return false;
+        // non loggato
+        case 'login': case 'signup':
+           return this.bearer !== '' ? this._router.createUrlTree(['/home']) : true;
+
+        // loaggato
+        case 'nuovoPortafoglio': case 'home': case 'nuovoInvoice': case 'transazioni': case 'listaPortafogli': case 'listaInvoice':
+          return this.bearer !== '' ? true : this._router.createUrlTree(['/login']);
       }
     }
     return this._router.createUrlTree(['/']);

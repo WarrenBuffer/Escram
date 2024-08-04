@@ -17,12 +17,12 @@ import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
-import { TransazioneComponent } from './transazione/transazione.component';
 import { HomeComponent } from './home/home.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DialogModule } from 'primeng/dialog';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { ToastModule } from 'primeng/toast';
+import { PanelModule } from 'primeng/panel';
 
 import { LoginComponent } from './login/login.component';
 import { MessageService } from 'primeng/api';
@@ -33,20 +33,21 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { MenubarModule } from 'primeng/menubar';
 import { ImageModule } from 'primeng/image';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ListaPortafogliComponent } from './lista-portafogli/lista-portafogli.component';
+import { AvatarModule } from 'primeng/avatar';
+import { MenuModule } from 'primeng/menu';
+import { ListaInvoiceComponent } from './lista-invoice/lista-invoice.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PortafoglioComponent,
     InvoiceComponent,
-    TransazioneComponent,
     LoginComponent,
     SignUpComponent,
     LoadingComponent,
     NavbarComponent,
     HomeComponent,
-    ListaPortafogliComponent
+    ListaInvoiceComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,10 +75,12 @@ import { ListaPortafogliComponent } from './lista-portafogli/lista-portafogli.co
     AccordionModule,
     SelectButtonModule,
     InputTextModule,
-    DialogModule
+    DialogModule,
+    PanelModule,
+    AvatarModule,
+    MenuModule
   ],
   providers: [
-    provideClientHydration(),
     provideHttpClient(withFetch()),
     MessageService, HttpClient],
   bootstrap: [AppComponent]

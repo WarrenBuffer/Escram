@@ -1,24 +1,21 @@
 import { NgModule } from '@angular/core';
 import { PortafoglioComponent } from './nuovo-portafoglio/nuovo-portafoglio.component';
 import { InvoiceComponent } from './invoice/invoice.component';
-import { TransazioneComponent } from './transazione/transazione.component';
-import { ListaPortafogliComponent } from './lista-portafogli/lista-portafogli.component';
 import { HomeComponent } from './home/home.component';
 
 import { mapToCanActivate, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from './services/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { ListaInvoiceComponent } from './lista-invoice/lista-invoice.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'signupEscram', pathMatch: 'full'},
-  { path: 'loginEscram', canActivate: mapToCanActivate([AuthGuardService]), component: LoginComponent},
-  { path: 'signupEscram', canActivate: mapToCanActivate([AuthGuardService]), component: SignUpComponent},
+  { path: '', redirectTo: 'login', pathMatch: 'full'},
+  { path: 'login', canActivate: mapToCanActivate([AuthGuardService]), component: LoginComponent},
+  { path: 'signup', canActivate: mapToCanActivate([AuthGuardService]), component: SignUpComponent},
   { path: 'nuovoPortafoglio', canActivate: mapToCanActivate([AuthGuardService]), component: PortafoglioComponent },
-  { path: 'invoice',canActivate: mapToCanActivate([AuthGuardService]), component: InvoiceComponent},
-  { path: 'listaPortafogli',canActivate: mapToCanActivate([AuthGuardService]), component: ListaPortafogliComponent},
-
-  { path: 'transazioni',canActivate: mapToCanActivate([AuthGuardService]), component: TransazioneComponent},
+  { path: 'nuovoInvoice',canActivate: mapToCanActivate([AuthGuardService]), component: InvoiceComponent},
+  { path: 'listaInvoice',canActivate: mapToCanActivate([AuthGuardService]), component: ListaInvoiceComponent},
   { path: 'home',canActivate: mapToCanActivate([AuthGuardService]), component: HomeComponent},
 ];
 

@@ -1,0 +1,33 @@
+<app-navbar />
+<app-loading [loading]="loading" />
+<p-card header="Lista invoice" *ngIf="!loading">
+    <h3 *ngIf="invoices?.length === 0">Nessun invoice presente</h3>
+    <p-table *ngIf="invoices?.length !== 0" [value]="invoices">
+        <ng-template pTemplate="header">
+            <tr>
+                <th><strong style="color: #FFD54F;">Id</strong></th>
+                <th><strong style="color: #FFD54F;">Importo</strong></th>
+                <th><strong style="color: #FFD54F;">Url</strong></th>
+                <th><strong style="color: #FFD54F;">Apertura</strong></th>
+                <th><strong style="color: #FFD54F;">Scadenza</strong></th>
+                <th><strong style="color: #FFD54F;">Destinatario</strong></th>
+                <th><strong style="color: #FFD54F;">Stato</strong></th>
+                <th><strong style="color: #FFD54F;">Stato venditore</strong></th>
+                <th><strong style="color: #FFD54F;">Stato compratore</strong></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-invoice>
+            <tr>
+                <td>{{invoice.invoiceId}}</td>
+                <td>{{invoice.usdAmount}}</td>
+                <td>{{invoice.url}}</td>
+                <td>{{invoice.dataApertura | date:"dd/MM/yyyy HH:mm:ss"}}</td>
+                <td>{{invoice.dataScadenza | date:"dd/MM/yyyy HH:mm:ss"}}</td>
+                <td>{{invoice.emailDst}}</td>
+                <td>{{invoice.status}}</td>
+                <td>{{invoice.statoSrc}}</td>
+                <td>{{invoice.statoDst}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>

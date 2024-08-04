@@ -36,8 +36,8 @@ export class AuthenticationService {
   }
 
   logout() {
-    this._router.navigate(['/loginEscram']);
     sessionStorage.removeItem("bearer");
     sessionStorage.removeItem("cliente");
+    this._router.navigate(['/login']);
   }
 }

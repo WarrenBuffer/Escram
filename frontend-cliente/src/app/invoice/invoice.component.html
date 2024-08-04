@@ -1,37 +1,29 @@
 <app-navbar />
-<div style="display: flex;
-justify-content: center;
-align-items: center;
-height: 100%;
-width: 100%;">
-  <p-card header="Nuovo Invoice" [ngStyle]="{'width':'40%', 'text-align': 'center', 'min-width': '300px', 'margin-bottom':'20px'}">
-    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
-      <div class="flex flex-column sm:flex-row gap-2" style="margin-bottom: 2%;" >
-          <input style="width: 100%;" pInputText formControlName="toEmail" placeholder="Email del destinatario..." />
-      </div>
-      <p-message severity="error" *ngIf="form.controls.toEmail.invalid && form.controls.toEmail.dirty" text="L'email deve essere valida" />
-      
-      <div class="flex flex-column sm:flex-row gap-2" style="margin-bottom: 2%;" >
-        <input style="width: 100%;" type="textarea" formControlName="descrizione" pInputText  name="descrizione" placeholder="Descrizione..."/>
-      </div>
-      <p-message severity="error" *ngIf="form.controls.toEmail.invalid && form.controls.toEmail.dirty" text="Aggiungere una descrizione" />
-      
-      <div class="flex flex-column sm:flex-row gap-2" style="margin-bottom: 2%;" >
-        <input style="width: 100%;" type="number" formControlName="amount" pInputText  name="amount" placeholder="Importo..."/>
-      </div>
-      <p-message severity="error" *ngIf="form.controls.toEmail.invalid && form.controls.toEmail.dirty" text="Aggiungere un importo" />
-      
-      <p-dropdown 
-        [options]="crypto" 
-        formControlName="descrizione"
-        optionLabel="name" 
-        placeholder="Select a City" />
+<app-loading [loading]="loading" />
+<p-card header="Nuovo Invoice" *ngIf="!loading">
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+    <div class="flex flex-column sm:flex-row gap-2">
+      <input pInputText formControlName="toEmail" placeholder="Email destinatario..." />
+      <p-message *ngIf="form.controls.toEmail.invalid && form.controls.toEmail.dirty" severity="error"
+        text="L'email deve essere valida" />
+    </div>
+    <div class="flex flex-column sm:flex-row gap-2 mt-2">
+      <input type="text" formControlName="descrizione" pInputText name="descrizione" placeholder="Descrizione..." />
+      <p-message *ngIf="form.controls.descrizione.invalid && form.controls.descrizione.dirty" severity="error"
+        text="Aggiungi una descrizione" />
+    </div>
+    <div class="flex flex-column sm:flex-row gap-2 mt-2">
+      <input type="number" formControlName="amount" pInputText name="amount" placeholder="Importo (in dollari)..." />
+      <p-message *ngIf="form.controls.descrizione.invalid && form.controls.descrizione.dirty" severity="error"
+        text="Inserisci un importo maggiore di 1" />
+    </div>
+    <div class="mt-2">
+      <p-dropdown [options]="crypto" optionLabel="simbolo" formControlName="simbolo" placeholder="Scegli una crypto"/>
+    </div>
 
-
-      <hr style="border-color: #FFD54F;">
-      <div class="mt-4" >
-          <p-button  type="submit" severity="primary" [disabled]="!form.valid" [raised]="true" size="small" label="Invia Init" icon="pi pi-send"/>
-      </div>
-    </form>
-  </p-card>
-</div>
+    <div class="mt-2">
+      <p-button type="submit" severity="primary" [disabled]="!form.valid" [raised]="true" size="small"
+        label="Crea invoice" icon="pi pi-send" />
+    </div>
+  </form>
+</p-card>

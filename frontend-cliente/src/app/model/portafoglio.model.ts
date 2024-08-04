@@ -1,9 +1,14 @@
+import { Crypto } from "./crypto.model";
+
 export class Portafoglio {
     indirizzo!: string;
     idCliente!: number;
     blocked!: boolean;
     saldo!: number;
     creazione!: Date;
-    qrCode: string | undefined;
-    simbolo!: string;
+    scadenza!: Date;
+    qrCode!: string;
+    crypto!: Crypto;
+    transazioni!: any[];
+    richiesteWithdraw!: any[];
 }

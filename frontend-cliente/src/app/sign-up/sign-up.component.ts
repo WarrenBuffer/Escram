@@ -10,7 +10,7 @@ import { ApiService } from '../services/api.service';
   styleUrl: './sign-up.component.css'
 })
 export class SignUpComponent {
-  stateOptions: any[] = [{ label: 'Sono un venditore', value: 'venditore' },{ label: 'Sono un compratore', value: 'compratore' }];
+  stateOptions: any[] = [{ label: 'Venditore', value: 'venditore' },{ label: 'Compratore', value: 'compratore' }];
   private cliente: Cliente = new Cliente();
   
   form = new FormGroup({
@@ -22,7 +22,7 @@ export class SignUpComponent {
   })
 
 
-  constructor(private authenticationService: AuthenticationService, private apiService: ApiService) {
+  constructor(private apiService: ApiService) {
   }
 
   submit(form: any) {

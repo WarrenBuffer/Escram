@@ -1,29 +1,30 @@
 <div class="mb-4">
-    <p-menubar *ngIf="isAuthenticated()" [model]="items"  [style]="{'border-radius': '0px', 'border-width': '0px'}" >
+    <p-menubar *ngIf="isAuthenticated()" [model]="items">
         <ng-template pTemplate="start" >
-            <a routerLink="/home" class="flex align-items-center justify-content-center" style="text-decoration: none">
-                <img src="/favicon.ico" alt="Escram" style="width: 60px;" />
-                <span class="ml-4" style="color: gray; font-size: x-large; "><strong>Escram</strong></span>
+            <a routerLink="/" class="mr-4">
+                <img src="/favicon.ico" alt="Escram" style="width: 50px;" />
             </a>
         </ng-template>
         <ng-template pTemplate="end" >
             <a class="flex">
-                <p-button [label]="getName()" icon="pi pi-user" severity="contrast" size="small" class="mr-2" [badge]="getNumeroNotifiche()" routerLink="/notifiche"/>
-                <p-button label="Logout" icon="pi pi-sign-out" size="small" (onClick)="showDialog()"  />
+                <p-button [label]="getName()" icon="pi pi-user" severity="contrast" size="small"  [badge]="getNumeroNotifiche()" routerLink="/notifiche"/>
+                <p-button label="Logout" icon="pi pi-sign-out" size="small" class="ml-2" (onClick)="showDialog()"  />
             </a>
         </ng-template>
     </p-menubar>  
 
     <p-menubar *ngIf="!isAuthenticated()">
         <ng-template pTemplate="start">
-            <a routerLink="/" class="flex align-items-center justify-content-center" style="text-decoration: none;">
+            <a routerLink="/" class="mr-4">
                 <img src="/favicon.ico" alt="Escram" style="width: 60px;" />
-                <span class="ml-4" style="color: gray; font-size: x-large; "><strong>Escram</strong></span>
             </a>
         </ng-template>
         
-        <ng-template pTemplate="end">
-            <a routerLink="/loginEscram">
+        <ng-template pTemplate="end" >
+            <a routerLink="/signup" >
+                <p-button label="Sign up" icon="pi pi-user-plus"  />
+            </a>
+            <a routerLink="/login" class="ml-2">
                 <p-button label="Login" icon="pi pi-sign-in"  />
             </a>
         </ng-template>
