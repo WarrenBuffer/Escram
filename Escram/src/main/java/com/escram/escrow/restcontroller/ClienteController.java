@@ -77,7 +77,6 @@ public class ClienteController implements Costanti {
 	public Response creaPortafoglio(@RestPath String simbolo, CreaPortafoglioRequest request) {
 		try {
 			String email = jwt.getName();
-			System.out.println(email + simbolo + request.getLabel());
 			BCResponse bcRes = clienteBC.creaPortafoglio(simbolo, email, request.getLabel());
 
 			if (!bcRes.isOk())
@@ -143,6 +142,42 @@ public class ClienteController implements Costanti {
 		}
 	}
 	
+	@Path("/annullaInvoice")
+	@POST
+	@RolesAllowed(CLIENT_ROLE)
+	public Response annullaInvoice(GetInvoiceRequest request) {
+		try {
+			String fromEmail = jwt.getName();
+			BCResponse bcRes = clienteBC.annullaInvoice(fromEmail, request.getInvoiceId());
+
+			if (!bcRes.isOk())
+				return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
+
+			return Response.status(Response.Status.OK).entity(bcRes.getMessage()).build();
+		} catch (Exception exc) {
+			exc.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	@Path("/confermaInvoice")
+	@POST
+	@RolesAllowed(CLIENT_ROLE)
+	public Response confermaInvoice(GetInvoiceRequest request) {
+		try {
+			String fromEmail = jwt.getName();
+			BCResponse bcRes = clienteBC.confermaInvoice(fromEmail, request.getInvoiceId());
+			
+			if (!bcRes.isOk())
+				return Response.status(Response.Status.BAD_REQUEST).entity(bcRes.getMessage()).build();
+			
+			return Response.status(Response.Status.OK).entity(bcRes.getMessage()).build();
+		} catch (Exception exc) {
+			exc.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
 	@Path("/getCrypto")
 	@GET
 	@RolesAllowed(CLIENT_ROLE)
@@ -183,4 +218,6 @@ public class ClienteController implements Costanti {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
+	
+	
 }

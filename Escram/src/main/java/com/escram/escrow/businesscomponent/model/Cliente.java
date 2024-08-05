@@ -42,7 +42,10 @@ public class Cliente implements Serializable{
 	private TipologiaCliente tipologia;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "emailSrc")
-	private Set<Invoice> invoices;
+	private Set<Invoice> invoicesSrc;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "emailDst")
+	private Set<Invoice> invoicesDst;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "emailCliente")
 	private Set<Portafoglio> portafogli;

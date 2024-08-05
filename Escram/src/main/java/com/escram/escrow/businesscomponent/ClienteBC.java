@@ -109,7 +109,6 @@ public class ClienteBC implements Costanti {
 			return new BCResponse(false, "Valori null.");
 		
 		Optional<Cliente> cliente = cs.findById(email);
-		System.out.println(email);
 		if (cliente.isEmpty())
 			return new BCResponse(false, "Nessun utente trovato.");
 		
@@ -163,8 +162,6 @@ public class ClienteBC implements Costanti {
 			return new BCResponse(false, "Simbolo non esistente.");
 		
 		Cliente cliente = clienteOpt.get();
-		System.out.println(fromIndirizzo);
-		System.out.println(cliente);
 		for (Portafoglio p : cliente.getPortafogli()) {
 			if (p.getIndirizzo().equals(fromIndirizzo) && p.getSaldo() > importo) {
 				RichiestaWithdraw rw = new RichiestaWithdraw();
@@ -251,6 +248,7 @@ public class ClienteBC implements Costanti {
 		String invoiceId = data.get("invoice_id").asText();
 		double usdAmount = data.get("usd_amount").asDouble();
 		String status = data.get("status").asText();
+		String coin = data.get("coin").asText();
 		String url = data.get("url").asText();
 		
 		Date dataApertura = new Date();
@@ -258,7 +256,7 @@ public class ClienteBC implements Costanti {
 		cal.add(Calendar.MINUTE, INVOICE_EXPIRATION);
 		Date dataScadenza = cal.getTime();
 		
-		Invoice invoice = new Invoice(id, invoiceId, usdAmount, status, url, fromEmail, toEmail, dataApertura, dataScadenza, StatoTransazione.IN_ATTESA, StatoTransazione.IN_ATTESA);
+		Invoice invoice = new Invoice(id, invoiceId, usdAmount, descrizione, status, coin, url, fromEmail, toEmail, dataApertura, dataScadenza, StatoTransazione.IN_ATTESA, StatoTransazione.IN_ATTESA);
 		is.save(invoice);
 		
 		Notifica notifica = new Notifica();
@@ -275,7 +273,7 @@ public class ClienteBC implements Costanti {
 		
 		
 		Optional<Crypto> cryptoOpt = crys.findById(simbolo);
-		Optional<Invoice> invoiceOpt = is.findById(invoiceId);
+		Optional<Invoice> invoiceOpt = is.findByInvoiceId(invoiceId);
 		if (cryptoOpt.isEmpty() || invoiceOpt.isEmpty()) {
 			return new BCResponse(false, "Simbolo o invoice non esistente.");
 		}
@@ -290,7 +288,58 @@ public class ClienteBC implements Costanti {
 		if (rootNode.get("flag").asInt() != 1) 
 			return new BCResponse(false, "Chiamata a CoinRemitter fallita.");
 		
+		JsonNode data = rootNode.get("data");
+		String status = data.get("status").asText();
+		
+		Invoice invoice = invoiceOpt.get();
+		invoice.setStatus(status);
+		is.save(invoice);
+		
 		return new BCResponse(true, json);
+	}
+	
+	public BCResponse annullaInvoice(String email, String invoiceId) {
+		if (email == null || invoiceId == null)
+			return new BCResponse(false, "Valori null.");
+		
+		Optional<Cliente> clienteOpt = cs.findById(email);
+		Optional<Invoice> invoiceOpt = is.findByInvoiceId(invoiceId);
+		
+		if (clienteOpt.isEmpty() || invoiceOpt.isEmpty()) 
+			return new BCResponse(false, "Cliente o invoice non esistenti.");
+		
+		Invoice invoice = invoiceOpt.get();
+		if (clienteOpt.get().getTipologia() == TipologiaCliente.COMPRATORE) {
+			invoice.setStatoDst(StatoTransazione.ANNULLATO);
+		} else {
+			invoice.setStatoSrc(StatoTransazione.ANNULLATO);
+		}
+		
+		is.save(invoice);
+			
+		return new BCResponse(true, "Invoice annullato correttamente.");
+	}
+
+	public BCResponse confermaInvoice(String email, String invoiceId) {
+		if (email == null || invoiceId == null)
+			return new BCResponse(false, "Valori null.");
+		
+		Optional<Cliente> clienteOpt = cs.findById(email);
+		Optional<Invoice> invoiceOpt = is.findByInvoiceId(invoiceId);
+		
+		if (clienteOpt.isEmpty() || invoiceOpt.isEmpty()) 
+			return new BCResponse(false, "Cliente o invoice non esistenti.");
+		
+		Invoice invoice = invoiceOpt.get();
+		if (clienteOpt.get().getTipologia() == TipologiaCliente.COMPRATORE) {
+			invoice.setStatoDst(StatoTransazione.CONFERMATO);
+		} else {
+			invoice.setStatoSrc(StatoTransazione.CONFERMATO);
+		}
+		
+		is.save(invoice);
+			
+		return new BCResponse(true, "Invoice confermato correttamente.");	
 	}
 	
 	public BCResponse getCoinRate() throws URISyntaxException {

@@ -50,4 +50,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public List<Invoice> inAttesa() {
 		return ir.inAttesa();
 	}
+
+	@Override
+	public Optional<Invoice> findByInvoiceId(String invoiceId) {
+		return ir.findByInvoiceId(invoiceId);
+	}
 }

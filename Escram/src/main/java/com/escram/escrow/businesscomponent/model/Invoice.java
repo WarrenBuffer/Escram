@@ -30,9 +30,16 @@ public class Invoice implements Serializable{
 	
 	@Column(name = "usdAmount", nullable = false)
 	private double usdAmount;
+	
+	@Column(name = "descrizione", nullable = false)
+	private String descrizione;
 
 	@Column(name = "status", nullable = false)
 	private String status;
+
+
+	@Column(name = "coin", nullable = false)
+	private String coin;
 
 	@Column(name = "url", nullable = false)
 	private String url;

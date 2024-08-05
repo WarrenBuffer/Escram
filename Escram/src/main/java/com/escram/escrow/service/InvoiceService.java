@@ -13,4 +13,5 @@ public interface InvoiceService {
 	List<Invoice> irrisolte();
 	List<Invoice> completate();
 	List<Invoice> inAttesa();
+	Optional<Invoice> findByInvoiceId(String invoiceId);
 }

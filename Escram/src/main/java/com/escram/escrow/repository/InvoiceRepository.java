@@ -2,6 +2,7 @@ package com.escram.escrow.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String>{
 	
 	@Query(value="from Invoice where statoDst=StatoTransazione.IN_ATTESA or statoSrc=StatoTransazione.IN_ATTESA")
 	List<Invoice> inAttesa();
+	
+	Optional<Invoice> findByInvoiceId(String invoiceId);
 }
