@@ -21,7 +21,7 @@
                     <td>{{cliente.cognome}}</td>
                     <td>{{cliente.tipologia}}</td>
                     <td>{{cliente.portafogli.length}}</td>
-                    <td>{{cliente.invoices.length}}</td>
+                    <td>{{cliente.invoicesDst.length + cliente.invoicesSrc.length}}</td>
                     <td *ngIf="cliente.blocked">
                         <p-button label="Sblocca" severity="success" icon="pi pi-unlock" size="small" (onClick)="lockUnlock(cliente.email)"/>
                     </td>

@@ -9,6 +9,7 @@ export class Cliente {
     blocked!: boolean;
     tipologia!: string;
     portafogli!: Portafoglio[];
-    invoices!: Invoice[];
+    invoicesSrc!: Invoice[];
+    invoicesDst!: Invoice[];
     notifiche!: Notifica[];
 }

@@ -23,7 +23,6 @@ export class DisputeComponent implements OnInit{
       next: res => {
         this.loading = false;
         this.invoices = JSON.parse(res);
-        console.log(this.invoices);
       }, 
       error: err => {
         this.loading = false;

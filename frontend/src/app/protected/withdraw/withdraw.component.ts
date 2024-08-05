@@ -22,7 +22,6 @@ export class WithdrawComponent implements OnInit {
       next: res => {
         this.requests = res;
         this.loading = false;
-        console.log(this.requests);
       },
       error: err => {
         this.loading = false;

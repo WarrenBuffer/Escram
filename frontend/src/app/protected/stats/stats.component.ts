@@ -127,8 +127,8 @@ export class StatsComponent implements OnInit {
         this.stats.saldo += portafoglio.saldo;
       });
 
-      this.stats.invoices += cliente.invoices.length;
-      cliente.invoices.forEach(invoice => {
+      this.stats.invoices += cliente.invoicesSrc.length;
+      cliente.invoicesSrc.forEach(invoice => {
         if (invoice.status === 'Pending') this.stats.pending++;
         else if (invoice.status === 'Paid') this.stats.paid++;
         else if (invoice.status === 'Expired') this.stats.expired++;
