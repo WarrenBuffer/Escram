@@ -13,12 +13,12 @@
         text="Aggiungi una descrizione" />
     </div>
     <div class="flex flex-column sm:flex-row gap-2 mt-2">
-      <input type="number" formControlName="amount" pInputText name="amount" placeholder="Importo (in dollari)..." />
+      <input type="number" formControlName="amount" pInputText name="amount" placeholder="Importo (in coin)..." />
       <p-message *ngIf="form.controls.descrizione.invalid && form.controls.descrizione.dirty" severity="error"
         text="Inserisci un importo maggiore di 1" />
     </div>
     <div class="mt-2">
-      <p-dropdown [options]="crypto" optionLabel="simbolo" formControlName="simbolo" placeholder="Scegli una crypto"/>
+      <p-dropdown [options]="crypto" optionLabel="simbolo" formControlName="simbolo" placeholder="Scegli una crypto" />
     </div>
 
     <div class="mt-2">

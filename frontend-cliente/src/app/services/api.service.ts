@@ -90,7 +90,6 @@ export class ApiService {
   }
 
   newInvoice(invoice: any): Observable<any> {
-    console.log(invoice)
     return this._http.post(`${this.basePath}/createInvoice/${invoice.simbolo.simbolo}`, {
       toEmail: invoice.toEmail,
       descrizione: invoice.descrizione,
@@ -100,6 +99,56 @@ export class ApiService {
         'Content-Type': 'application/json',
         'Authorization': sessionStorage.getItem('bearer') ?? ''
       }),
+    }).pipe(
+      catchError((err) => {
+        this.toastService.showError("Errore interno del server\n" + err.error);
+        return of(undefined);
+      }),
+    )
+  }
+
+  updateInvoiceStatus(simbolo: string, invoiceId: string): Observable<any> {
+    return this._http.post(`${this.basePath}/getInvoice/${simbolo}`, {
+      invoiceId: invoiceId
+    }, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': sessionStorage.getItem('bearer') ?? ''
+      }),
+    }).pipe(
+      catchError((err) => {
+        this.toastService.showError("Errore interno del server\n" + err.error);
+        return of(undefined);
+      }),
+    )
+  }
+
+  annullaInvoice(invoiceId: string): Observable<any> {
+    return this._http.post(`${this.basePath}/annullaInvoice`, {
+      invoiceId: invoiceId
+    }, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': sessionStorage.getItem('bearer') ?? ''
+      }),
+      responseType: 'text'
+    }).pipe(
+      catchError((err) => {
+        this.toastService.showError("Errore interno del server\n" + err.error);
+        return of(undefined);
+      }),
+    )
+  }
+  
+  confermaInvoice(invoiceId: string): Observable<any> {
+    return this._http.post(`${this.basePath}/confermaInvoice`, {
+      invoiceId: invoiceId
+    }, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': sessionStorage.getItem('bearer') ?? ''
+      }),
+      responseType: 'text'
     }).pipe(
       catchError((err) => {
         this.toastService.showError("Errore interno del server\n" + err.error);

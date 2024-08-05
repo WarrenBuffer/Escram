@@ -4,7 +4,8 @@ export class Cliente {
     email!:string;
     password!:string;
     tipologia!: string;
-    invoices: any;
+    invoicesSrc: any;
+    invoicesDst: any;
     notifiche: any;
     portafogli: any;
 }

@@ -31,11 +31,14 @@ export class InvoiceComponent implements OnInit{
   }
 
   onSubmit(form: any) {
+    this.loading = true;
     this._apiService.newInvoice(form).subscribe({
       next: res => {
-        console.log(res)
+        this.loading = false;
+        this.toastService.showSuccess("Invoice creato con successo.")
       },
       error: err => {
+        this.loading = false;
         this.toastService.showError(err.error)
       }
     });

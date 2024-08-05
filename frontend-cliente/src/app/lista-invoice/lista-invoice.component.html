@@ -6,10 +6,11 @@
         <ng-template pTemplate="header">
             <tr>
                 <th><strong style="color: #FFD54F;">Id</strong></th>
+                <th><strong style="color: #FFD54F;">Descrizione</strong></th>
                 <th><strong style="color: #FFD54F;">Importo</strong></th>
-                <th><strong style="color: #FFD54F;">Url</strong></th>
                 <th><strong style="color: #FFD54F;">Apertura</strong></th>
                 <th><strong style="color: #FFD54F;">Scadenza</strong></th>
+                <th><strong style="color: #FFD54F;">Mittente</strong></th>
                 <th><strong style="color: #FFD54F;">Destinatario</strong></th>
                 <th><strong style="color: #FFD54F;">Stato</strong></th>
                 <th><strong style="color: #FFD54F;">Stato venditore</strong></th>
@@ -17,12 +18,13 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-invoice>
-            <tr>
+            <tr (click)="showDialog(invoice)">
                 <td>{{invoice.invoiceId}}</td>
-                <td>{{invoice.usdAmount}}</td>
-                <td>{{invoice.url}}</td>
+                <td>{{invoice.descrizione}}</td>
+                <td>{{invoice.usdAmount}} {{invoice.coin}}</td>
                 <td>{{invoice.dataApertura | date:"dd/MM/yyyy HH:mm:ss"}}</td>
                 <td>{{invoice.dataScadenza | date:"dd/MM/yyyy HH:mm:ss"}}</td>
+                <td>{{invoice.emailSrc}}</td>
                 <td>{{invoice.emailDst}}</td>
                 <td>{{invoice.status}}</td>
                 <td>{{invoice.statoSrc}}</td>
@@ -31,3 +33,22 @@
         </ng-template>
     </p-table>
 </p-card>
+
+<p-dialog [modal]="true" [(visible)]="visible" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [maximizable]="true" [draggable]="false" header="Dettagli" *ngIf="selectedInvoice">
+    <div class="flex flex-column gap-2">
+      <p-panel [header]="selectedInvoice.invoiceId">
+        <ng-template pTemplate="content">
+          <a [href]="selectedInvoice.url" style="text-decoration: none;">Link per pagare</a>
+          <p>Stato: {{selectedInvoice.status}}</p>
+          <p>Stato compratore: {{selectedInvoice.statoDst}}</p>
+          <p>Stato venditore: {{selectedInvoice.statoSrc}}</p>
+          <p-button *ngIf="selectedInvoice.status !== 'Paid'" icon="pi pi-sync" severity="secondary" size="small" pTooltip="Aggiorna lo status manualmente." (onClick)="updateInvoice()"/>
+          <p-button class="ml-2" severity="danger" [disabled]="selectedInvoice.status === 'Pending'" [raised]="true" size="small"
+        label="Annulla" icon="pi pi-times" (onClick)="annullaInvoice()"/>
+          <p-button class="ml-2" severity="success" [disabled]="selectedInvoice.status === 'Pending'" [raised]="true" size="small"
+        label="Conferma" icon="pi pi-check" (onClick)="confermaInvoice()"/>
+        </ng-template>
+      </p-panel>
+    </div>
+  </p-dialog>
